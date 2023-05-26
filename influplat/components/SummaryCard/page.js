@@ -31,8 +31,8 @@ export default function SummaryCard({ influencerName }){
         <div className="max-w-full my-4 mx-1 h-auto bg-zGreen-500 p-4 border-black border-2 flex flex-col items-center text-black">
             <Image 
                 src={influencerData.avatar}
-                width={200}
-                height={200}
+                width={150}
+                height={150}
                 alt={influencerName + "'s Avatar"}
                 className={`rounded-full border-black border-2`}
             />

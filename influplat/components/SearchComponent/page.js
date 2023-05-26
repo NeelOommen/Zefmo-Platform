@@ -6,13 +6,14 @@ export default function SearchComponent({setList, influencerList, setValid, vali
     const [collapsed, setCollapsed] = useState(true);
     const [buttonText, setButtonText] = useState('Show Filters');
 
+    const [instagramId, setInstagramId] = useState('');
     const [platform, setPlatform] = useState('');
     const [location, setLocation] = useState('');
     const [minFollowers, setMinFollowers] = useState(0);
     const [maxFollowers, setMaxFollowers] = useState(0);
     const [category, setCategory] = useState('');
-    const [minAge, setMinAge] = useState(0);
-    const [maxAge, setMaxAge] = useState(0);
+    const [avgLikes, setAvgLikes] = useState(0);
+    const [avgComments, setAvgComments] = useState(0);
 
     const instagramSearchURL = 'https://dev.creatordb.app/v2/instagramAdvancedSearch'
 
@@ -29,6 +30,8 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
+
+            setMinFollowers(0)
         }
 
         //Maximum Follower Filter
@@ -40,6 +43,8 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
+
+            setMaxFollowers(0)
         }
 
         //Location Filter
@@ -64,17 +69,42 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             filterList.push(filter)
         }
 
-        //Minimum age filter
-        if(minFollowers != 0){
+        //Instagram ID filter
+        if(instagramId != ''){
             const filter = {
-                'filterKey': 'followers',
-                'op': '>',
-                'value': parseInt(minFollowers)
+                'filterKey': 'instagramId',
+                'op': '=',
+                'value': instagramId
             }
 
             filterList.push(filter)
 
-            setMinFollowers(0)
+        }
+
+        //Average Like Filter
+        if(avgLikes > 0){
+            const filter = {
+                'filterKey': 'avgLikes',
+                'op': '>',
+                'value': parseInt(avgLikes)
+            }
+
+            filterList.push(filter)
+
+            setAvgLikes(0)
+        }
+
+        //Average Comment Filter
+        if(avgComments > 0){
+            const filter = {
+                'filterKey': 'avgComments',
+                'op': '>',
+                'value': parseInt(avgComments)
+            }
+
+            filterList.push(filter)
+
+            setAvgComments(0)
         }
 
 
@@ -116,7 +146,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
     }
 
     return(
-        <div className={`w-full py-6 bg-zYellow-500 text-black transition-all duration-300 border-b-2 border-black`}>
+        <div className={`w-full py-6 bg-zYellow-500 text-black transition-all duration-300`}>
 
             <div className={`text-black font-bold my-2 ml-4 ${collapsed===true?'text-lg':'text-4xl'} transition-all duration-300`}>Search</div>
 
@@ -127,28 +157,37 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                 value={platform}
             >
                 <option value='instagram'>Instagram</option>
-                <option value='tiktok'>Tiktok</option>
                 <option value='youtube'>Youtube</option>
             </select>
+            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Instagram ID</div>
+            <input 
+                type='text'
+                placeholder='Instagram ID'
+                className={`ml-4 px-4 py-2 text-black border-black border-2 ${collapsed === true? 'hidden':'block'}`}
+                onChange={(e)=>setInstagramId(e.target.value)}
+                value={instagramId}
+            />
             <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Country</div>
             <input 
                 type='text'
-                placeholder='country'
+                placeholder='Country'
                 className={`ml-4 px-4 py-2 text-black border-black border-2 ${collapsed === true? 'hidden':'block'}`}
                 onChange={(e)=>setLocation(e.target.value)}
                 value={location}
             />
-            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Followers</div>
+            <div className={`px-4 pt-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Followers</div>
+            <div className={`px-4 text-sm text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Minimum Followers</div>
             <input 
                 type='number'
-                placeholder='min followers'
+                placeholder='Minimum followers'
                 className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
                 onChange={(e)=>setMinFollowers(e.target.value)}
                 value={minFollowers}
             />
+            <div className={`px-4 text-sm text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Maximum Followers</div>
             <input 
                 type='number'
-                placeholder='max followers'
+                placeholder='Maximum followers'
                 className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
                 onChange={(e)=>setMaxFollowers(e.target.value)}
                 value={maxFollowers}
@@ -156,31 +195,32 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Category</div>
             <input 
                 type='text'
-                placeholder='category'
-                className={`ml-4 px-4 py-2 ${collapsed === true? 'hidden':'block'}`}
+                placeholder='Category'
+                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
                 onChange={(e)=>setCategory(e.target.value)}
                 value={category}
             />
             <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Tags</div>
             <input 
                 type='text'
-                placeholder='tags'
-                className={`ml-4 px-4 py-2 ${collapsed === true? 'hidden':'block'}`}
+                placeholder='Tags'
+                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
             />
-            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Age</div>
+            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Average Likes</div>
             <input 
                 type='number'
-                placeholder='age from'
-                className={`ml-4 px-4 py-2 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setMinAge(e.target.value)}
-                value={minAge}
+                placeholder='Average Likes'
+                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
+                onChange={(e)=>setAvgLikes(e.target.value)}
+                value={avgLikes}
             />
+            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Average Comments</div>
             <input 
                 type='number'
-                placeholder='age to'
-                className={`ml-4 px-4 py-2 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setMaxAge(e.target.value)}
-                value={maxAge}
+                placeholder='Average Comments'
+                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
+                onChange={(e)=>setAvgComments(e.target.value)}
+                value={avgComments}
             />
 
             <div className={`bg-zGreen-500 ${collapsed === true? 'hidden':'block'} border-2 border-black mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl`} onClick={searchHandler}>Search</div>
