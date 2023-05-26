@@ -113,7 +113,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
-              'apiId': '9hjiybMDHBg0xTnfDZBK5qwAErm2-0IdNSUn4zpizffcrZioD'
+              'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
             },
             body: JSON.stringify({
               'desc': true,

@@ -9,7 +9,7 @@ export default function SummaryCard({ influencerName }){
         fetch(`https://dev.creatordb.app/v2/instagramBasic?instagramId=${influencerName}`, {
             headers: {
               'Accept': 'application/json',
-              'apiId': '9hjiybMDHBg0xTnfDZBK5qwAErm2-0IdNSUn4zpizffcrZioD'
+              'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
             }
         })
         .then(response => response.json())
