@@ -54,7 +54,6 @@ export default function SummaryCard({ influencerName }){
             <div>
                 Engagement Rate: {(influencerData.engageRate * 100).toFixed(3)}%
             </div>
-
         </div>
     )
 }

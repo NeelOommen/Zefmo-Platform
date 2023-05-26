@@ -34,7 +34,7 @@ export default function Home() {
           <ResultSummary setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid}/>
         </div>
       </div>
-      <div className='w-full bg-zPurple-500 mt-2 flex flex-row'>
+      <div className='w-full bg-zPurple-500 mt-2flex flex-row'>
         {/* footer */}
         <div className='mx-4 my-2 bg-white py-2 px-2 border-2 border-black flex flex-col items-center text-sm text-black'>
           <a  href="https://icons8.com/icon/32292/instagram" className='underline text-zPink-500 decoration-wavy' target='_blank'>Instagram</a> icon by <a href="https://icons8.com" className='underline text-zGreen-500 decoration-wavy' target='_blank'>Icons8</a>

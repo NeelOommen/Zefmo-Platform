@@ -5,7 +5,7 @@ export default function ResultSummary({setList, influencerList, setValid, validF
     const data = influencerList.data
 
     return(
-        <div className="w-full">
+        <div className="w-full px-8">
             {validFlag?
             <div>
                 {
