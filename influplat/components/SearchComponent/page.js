@@ -5,9 +5,10 @@ import NextCors from 'nextjs-cors'
 export default function SearchComponent({setList, influencerList, setValid, validFlag}) {
     const [collapsed, setCollapsed] = useState(true);
     const [buttonText, setButtonText] = useState('Show Filters');
+    const [platform, setPlatform] = useState('Instagram');
 
+    //instagram filters
     const [instagramId, setInstagramId] = useState('');
-    const [platform, setPlatform] = useState(false);
     const [location, setLocation] = useState('');
     const [minFollowers, setMinFollowers] = useState(0);
     const [maxFollowers, setMaxFollowers] = useState(0);
@@ -15,10 +16,21 @@ export default function SearchComponent({setList, influencerList, setValid, vali
     const [avgLikes, setAvgLikes] = useState(0);
     const [avgComments, setAvgComments] = useState(0);
 
-    const instagramSearchURL = 'https://dev.creatordb.app/v2/instagramAdvancedSearch'
+    //youtube filters
+    const [maxSubscribers, setMaxYoutubeSubscribers] = useState(0);
+    const [minSubscribers, setMinYoutubeSubscribers] = useState(0);
+    const [avgYoutubeComments, setAvgYoutubeComments] = useState(0);
+    const [avgYoutubeLikes, setAvgYoutubeLikes] = useState(0);
+    const [avgYoutubeMaxViews, setAvgMaxYoutubeViews] = useState(0);
+    const [avgYoutubeMinViews, setAvgMinYoutubeViews] = useState(0);
+    //category topic niche
+    const [audienceCountry, setAudienceCountry] = useState('');
+    const [audienceMaxAge, setAudienceMaxAge] = useState(0);
+    const [audienceMinAge, setAudienceMinAge] = useState(0);
+    const [audienceMaleRatio, setAudienceMaleRatio] = useState(0);
+    const [audienceFemaleRatio, setAudienceFemaleRatio] = useState(0);
 
-    var searchHandler = function() {
-
+    function createInstagramFilters(){
         var filterList = []
 
         //Minimum Follower filter
@@ -107,8 +119,163 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             setAvgComments(0)
         }
 
+        return filterList;
+    }
 
-        fetch(instagramSearchURL, {
+    function createYoutubeFilters(){
+        var filterList
+
+        //Maximum Subscriber filter
+        if(maxSubscribers != 0){
+            const filter = {
+                'filterKey': 'subscribers',
+                'op': '<',
+                'value': parseInt(maxSubscribers)
+            }
+
+            filterList.push(filter)
+
+            setMaxYoutubeSubscribers(0)
+        }
+
+        //Minimum Subscriber filter
+        if(minSubscribers != 0){
+            const filter = {
+                'filterKey': 'subscribers',
+                'op': '>',
+                'value': parseInt(minSubscribers)
+            }
+
+            filterList.push(filter)
+
+            setMinYoutubeSubscribers(0)
+        }
+
+        //average Comments filter
+        if(avgYoutubeComments != 0){
+            const filter = {
+                'filterKey': 'avgComments1Y',
+                'op': '>',
+                'value': parseInt(avgYoutubeComments)
+            }
+
+            filterList.push(filter)
+
+            setAvgYoutubeComments(0)
+        }
+
+        //Average Likes filter
+        if(avgYoutubeLikes != 0){
+            const filter = {
+                'filterKey': 'avgLikes1Y',
+                'op': '>',
+                'value': parseInt(avgYoutubeLikes)
+            }
+
+            filterList.push(filter)
+
+            setAvgYoutubeLikes(0)
+        }
+
+        //Average max views filter
+        if(avgYoutubeMaxViews != 0){
+            const filter = {
+                'filterKey': 'avgViews1Y',
+                'op': '>',
+                'value': parseInt(avgYoutubeMaxViews)
+            }
+
+            filterList.push(filter)
+
+            setAvgMaxYoutubeViews(0)
+        }
+
+        //Average max views filter
+        if(avgYoutubeMinViews != 0){
+            const filter = {
+                'filterKey': 'avgViews1Y',
+                'op': '<',
+                'value': parseInt(avgYoutubeMinViews)
+            }
+
+            filterList.push(filter)
+
+            setAvgMinYoutubeViews(0)
+        }
+
+        //Audience country filter
+        if(audienceCountry != ''){
+            const filter = {
+                'filterKey': 'demographic.mainCountry',
+                'op': '=',
+                'value': audienceCountry
+            }
+
+            filterList.push(filter)
+
+            setAudienceCountry('')
+        }
+
+        //Average audience max age filter
+        if(audienceMaxAge != 0){
+            const filter = {
+                'filterKey': 'demographic.avgAge',
+                'op': '>',
+                'value': parseInt(audienceMaxAge)
+            }
+
+            filterList.push(filter)
+
+            setAudienceMaxAge(0)
+        }
+
+        //Average audience min age filter
+        if(audienceMinAge != 0){
+            const filter = {
+                'filterKey': 'demographic.avgAge',
+                'op': '<',
+                'value': parseInt(audienceMinAge)
+            }
+
+            filterList.push(filter)
+
+            setAudienceMinAge(0)
+        }
+
+        //Audience male ratio filter
+        if(audienceMaleRatio != 0){
+            const filter = {
+                'filterKey': 'demographic.genderMaleRatio',
+                'op': '>',
+                'value': parseFloat(audienceMaleRatio)
+            }
+
+            filterList.push(filter)
+
+            setAudienceMaleRatio(0)
+        }
+
+        //Audience male ratio filter
+        if(audienceFemaleRatio != 0){
+            const filter = {
+                'filterKey': 'demographic.genderFemaleRatio',
+                'op': '>',
+                'value': parseFloat(audienceFemaleRatio)
+            }
+
+            filterList.push(filter)
+
+            setAudienceFemaleRatio(0)
+        }
+
+        return filterList;
+    }
+
+    function instagramSearch(){
+        const instagramSearchUrl = 'https://dev.creatordb.app/v2/instagramAdvancedSearch'
+        const filterList = createInstagramFilters()
+
+        fetch(instagramSearchUrl, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -133,6 +300,45 @@ export default function SearchComponent({setList, influencerList, setValid, vali
         })
     }
 
+    function youtubeSearch(){
+        const youtubeSearchUrl = 'https://dev.creatordb.app/v2/youtubeAdvancedSearch'
+        const filterList = createYoutubeFilters()
+
+        fetch(youtubeSearchUrl, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
+            },
+            body: JSON.stringify({
+              'desc': true,
+              'filters': filterList,
+              'maxResults': 25,
+              'offset': 0,
+              'sortBy': 'followers'
+            })
+        }).then(response => response.json())
+        .then(data => {
+            setList(data)
+            setValid(true)
+        })
+        .catch(error => {
+            console.log(error)
+            setValid(false)
+        })
+    }
+
+    var searchHandler = function() {
+
+        if(platform === 'Instagram'){
+            instagramSearch()
+        }
+        else if(platform === 'Youtube'){
+            youtubeSearch()
+        }
+    }
+
     var collapseHandler = function() {
         if(collapsed === true){
             setButtonText('Hide Filters');
@@ -154,103 +360,126 @@ export default function SearchComponent({setList, influencerList, setValid, vali
 
             <div className={`text-black font-bold my-2 ml-4 ${collapsed===true?'text-lg':'text-4xl'} transition-all duration-300`}>Search</div>
 
-            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>Platform</div>
-            <select 
-                className={`mx-4 px-4 py-2 border-black border-2 hover:bg-zPink-500 transition-all duration-300 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setPlatform(e.target.value)}
-                value={platform}
-            >
-                <option value='Instagram'>Instagram</option>
-                <option value='Youtube'>Youtube</option>
-            </select>
-            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Instagram ID</div>
-            <input 
-                type='text'
-                placeholder='Instagram ID'
-                className={`ml-4 px-4 py-2 text-black border-black border-2 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setInstagramId(e.target.value)}
-                value={instagramId}
-            />
-            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Country</div>
-            {/* <input 
-                type='text'
-                placeholder='Country'
-                className={`ml-4 px-4 py-2 text-black border-black border-2 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setLocation(e.target.value)}
-                value={location}
-            /> */}
-            <select 
-                className={`mx-4 px-4 py-2 border-black border-2 hover:bg-zPink-500 transition-all duration-300 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setLocation(e.target.value)}
-                value={location}
-            >
-                {
-                    countryOptions.map((country) => (
-                        <option value={country}>{country}</option>
-                    ))
-                }
-            </select>
-            <div className={`px-4 pt-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Followers</div>
-            <div className={`px-4 text-sm text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Minimum Followers</div>
-            <input 
-                type='number'
-                placeholder='Minimum followers'
-                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setMinFollowers(e.target.value)}
-                value={minFollowers}
-            />
-            <div className={`px-4 text-sm text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Maximum Followers</div>
-            <input 
-                type='number'
-                placeholder='Maximum followers'
-                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setMaxFollowers(e.target.value)}
-                value={maxFollowers}
-            />
-            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Category</div>
-            {/* <input 
-                type='text'
-                placeholder='Category'
-                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setCategory(e.target.value)}
-                value={category}
-            /> */}
-            <select 
-                className={`mx-4 px-4 py-2 max-w-screen border-black border-2 hover:bg-zPink-500 transition-all duration-300 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setCategory(e.target.value)}
-                value={category}
-            >
-                {
-                    categoryOptions.map((category) => (
-                        <option value={category} className="max-w-full mx-4">{category}</option>
-                    ))
-                }
-            </select>
-            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Tags</div>
-            <input 
-                type='text'
-                placeholder='Tags'
-                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
-            />
-            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Average Likes</div>
-            <input 
-                type='number'
-                placeholder='Average Likes'
-                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setAvgLikes(e.target.value)}
-                value={avgLikes}
-            />
-            <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden':'block'}`}>Average Comments</div>
-            <input 
-                type='number'
-                placeholder='Average Comments'
-                className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
-                onChange={(e)=>setAvgComments(e.target.value)}
-                value={avgComments}
-            />
+            <div className={`${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>
+                {/* collapsible */}
+                <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>Platform</div>
+                <select 
+                    className={`mx-4 px-4 py-2 border-black border-2 hover:bg-zPink-500 transition-all duration-300 ${collapsed === true? 'hidden':'block'}`}
+                    onChange={(e)=>setPlatform(e.target.value)}
+                    value={platform}
+                >
+                    <option value='Instagram'>Instagram</option>
+                    <option value='Youtube'>Youtube</option>
+                </select>
+                <div className={`${(collapsed === true || platform!='Instagram')? 'hidden':'block'}`}>
+                    {/* Instagram Filters */}
+                    <div className={`px-4 py-6 text-black font-bold`}>Instagram ID</div>
+                    <input 
+                        type='text'
+                        placeholder='Instagram ID'
+                        className={`ml-4 px-4 py-2 text-black border-black border-2 ${(collapsed === true || platform!='Instagram')? 'hidden':'block'}`}
+                        onChange={(e)=>setInstagramId(e.target.value)}
+                        value={instagramId}
+                    />
+                    <div className={`px-4 py-6 text-black font-bold`}>Country</div>
+                    {/* <input 
+                        type='text'
+                        placeholder='Country'
+                        className={`ml-4 px-4 py-2 text-black border-black border-2 ${collapsed === true? 'hidden':'block'}`}
+                        onChange={(e)=>setLocation(e.target.value)}
+                        value={location}
+                    /> */}
+                    <select 
+                        className={`mx-4 px-4 py-2 border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
+                        onChange={(e)=>setLocation(e.target.value)}
+                        value={location}
+                    >
+                        {
+                            countryOptions.map((country) => (
+                                <option key={country} value={country}>{country}</option>
+                            ))
+                        }
+                    </select>
+                    <div className={`px-4 pt-6 text-black font-bold`}>Followers</div>
+                    <div className={`px-4 text-sm text-black font-bold`}>Minimum Followers</div>
+                    <input 
+                        type='number'
+                        placeholder='Minimum followers'
+                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        onChange={(e)=>setMinFollowers(e.target.value)}
+                        value={minFollowers}
+                    />
+                    <div className={`px-4 text-sm text-black font-bold`}>Maximum Followers</div>
+                    <input 
+                        type='number'
+                        placeholder='Maximum followers'
+                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        onChange={(e)=>setMaxFollowers(e.target.value)}
+                        value={maxFollowers}
+                    />
+                    <div className={`px-4 py-6 text-black font-bold`}>Category</div>
+                    {/* <input 
+                        type='text'
+                        placeholder='Category'
+                        className={`ml-4 px-4 py-2 border-black border-2 ${collapsed === true? 'hidden':'block'}`}
+                        onChange={(e)=>setCategory(e.target.value)}
+                        value={category}
+                    /> */}
+                    <select 
+                        className={`mx-4 px-4 py-2 max-w-screen border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
+                        onChange={(e)=>setCategory(e.target.value)}
+                        value={category}
+                    >
+                        {
+                            categoryOptions.map((category) => (
+                                <option key={category} value={category} className="max-w-full mx-4">{category}</option>
+                            ))
+                        }
+                    </select>
+                    <div className={`px-4 py-6 text-black font-bold`}>Tags</div>
+                    <input 
+                        type='text'
+                        placeholder='Tags'
+                        className={`ml-4 px-4 py-2 border-black border-2`}
+                    />
+                    <div className={`px-4 py-6 text-black font-bold`}>Average Likes</div>
+                    <input 
+                        type='number'
+                        placeholder='Average Likes'
+                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        onChange={(e)=>setAvgLikes(e.target.value)}
+                        value={avgLikes}
+                    />
+                    <div className={`px-4 py-6 text-black font-bold`}>Average Comments</div>
+                    <input 
+                        type='number'
+                        placeholder='Average Comments'
+                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        onChange={(e)=>setAvgComments(e.target.value)}
+                        value={avgComments}
+                    />
+                </div>
 
-            <div className={`bg-zGreen-500 ${collapsed === true? 'hidden':'block'} border-2 border-black mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl`} onClick={searchHandler}>Search</div>
-
+                <div className={`${(collapsed === true || platform!='Youtube')? 'hidden':'block'}`}>
+                    {/* Youtube Filters */}
+                    <div className={`px-4 py-6 text-black font-bold`}>Subscribers</div>
+                    <div className={`px-4 text-sm text-black font-bold`}>Minimum Subscribers</div>
+                    <div className={`px-4 text-sm text-black font-bold`}>Maximum Subscribers</div>
+                    <div className={`px-4 py-6 text-black font-bold`}>Average Likes</div>
+                    <div className={`px-4 py-6 text-black font-bold`}>Average Comments</div>
+                    <div className={`px-4 py-6 text-black font-bold`}>Views</div>
+                    <div className={`px-4 text-sm text-black font-bold`}>Maximum Average Views</div>
+                    <div className={`px-4 text-sm text-black font-bold`}>Minimum Average Views</div>
+                    <div className={`px-4 py-6 text-black font-bold`}>Audience Country</div>
+                    <div className={`px-4 py-6 text-black font-bold`}>Audience Gender Ratios</div>
+                    <div className={`px-4 text-sm text-black font-bold`}>Male Audience Ratio</div>
+                    <div className={`px-4 text-sm text-black font-bold`}>Minimum Audience Ratio</div>
+                    <div className={`px-4 py-6 text-black font-bold`}>Audience Average Age</div>
+                    <div className={`px-4 text-sm text-black font-bold`}>Maximum Audience Age</div>
+                    <div className={`px-4 text-sm text-black font-bold`}>Minimum Audience Age</div>
+                </div>
+                <div className={`bg-zGreen-500 border-2 border-black mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl`} onClick={searchHandler}>Search</div>
+            </div>
             <div className={`text-black font-bold my-4 mx-4 border-black border-2 min-w-screen right-4 flex flex-col items-center bg-zPink-500 hover:bg-zGreen-500 transition-all duration-300`} onClick={collapseHandler}>{buttonText}</div>
         </div>
     );
