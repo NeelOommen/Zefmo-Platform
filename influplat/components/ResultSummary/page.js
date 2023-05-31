@@ -1,6 +1,6 @@
 import SummaryCard from "../SummaryCard/page";
 
-export default function ResultSummary({setList, influencerList, setValid, validFlag}) {
+export default function ResultSummary({setList, influencerList, setValid, validFlag, platform, setPlatform}) {
 
     const data = influencerList.data
 
@@ -10,7 +10,7 @@ export default function ResultSummary({setList, influencerList, setValid, validF
             <div>
                 {
                     data.map((influencer) => (
-                        <SummaryCard key={influencer} influencerName={influencer}/>
+                        <SummaryCard key={influencer} influencerName={influencer} platform={platform} setPlatform={setPlatform}/>
                     ))
                 }
             </div>

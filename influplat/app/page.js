@@ -12,6 +12,7 @@ import { useState } from 'react'
 export default function Home() {
   const [influencerNameList, setInfluencerList] = useState('')
   const [dataValid, setValidity] = useState(false)
+  const [platform, setPlatform] = useState('Instagram')
 
   return (
     <main className='min-h-screen bg-zYellow-500 max-w-screen flex flex-col items-center'>
@@ -25,13 +26,13 @@ export default function Home() {
       </div>
       <div className='left-0 top-0 h-auto w-full flex flex-col items-center'>
         {/* Searchtab */}
-        <SearchComponent setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid}/>
+        <SearchComponent setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid} platform={platform} setPlatform={setPlatform}/>
       </div>
       <div className='w-full h-fit px-4 py-4 flex flex-col items-center'>
         {/* results */}
         <div className='w-full mx-1 bg-zPurple-500 border-black border-2 py-2 flex flex-col items-center'>
           Results
-          <ResultSummary setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid}/>
+          <ResultSummary setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid} platform={platform} setPlatform={setPlatform}/>
         </div>
       </div>
       <div className='w-full bg-zPurple-500 mt-2flex flex-row'>
