@@ -30,7 +30,7 @@ export default function Home() {
       </div>
       <div className='w-full h-fit px-4 py-4 flex flex-col items-center'>
         {/* results */}
-        <div className='w-full mx-1 bg-zPurple-500 border-black border-2 py-2 flex flex-col items-center'>
+        <div className='w-full mx-1 bg-zPurple-500 border-black border-2 py-2 flex flex-col items-center shadow-harsh10px'>
           Results
           <ResultSummary setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid} platform={platform} setPlatform={setPlatform}/>
         </div>
@@ -38,7 +38,7 @@ export default function Home() {
       <div className='w-full bg-zPurple-500 mt-2flex flex-row'>
         {/* footer */}
         <div className='mx-4 my-2 bg-white py-2 px-2 border-2 border-black flex flex-col items-center text-sm text-black'>
-          <a  href="https://icons8.com/icon/32292/instagram" className='underline text-zPink-500 decoration-wavy' target='_blank'>Instagram</a> icon by <a href="https://icons8.com" className='underline text-zGreen-500 decoration-wavy' target='_blank'>Icons8</a>
+          <span><a  href="https://icons8.com/icon/32292/instagram" className='underline text-zPink-500 decoration-wavy' target='_blank'>Instagram</a>, <a  href="https://icons8.com/icon/37325/youtube" className='underline text-zPink-500 decoration-wavy' target='_blank'>YouTube</a></span> icon by <a href="https://icons8.com" className='underline text-zGreen-500 decoration-wavy' target='_blank'>Icons8</a>
         </div>
       </div>
     </main>

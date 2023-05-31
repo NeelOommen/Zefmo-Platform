@@ -365,11 +365,11 @@ export default function SearchComponent({setList, influencerList, setValid, vali
 
             <div className={`text-black font-bold my-2 ml-4 ${collapsed===true?'text-lg':'text-4xl'} transition-all duration-300`}>Search</div>
 
-            <div className={`w-screen mx-4${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>
+            <div className={`mx-4${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>
                 {/* collapsible */}
                 <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>Platform</div>
                 <select 
-                    className={`mx-4 px-4 py-2 border-black border-2 hover:bg-zPink-500 transition-all duration-300 ${collapsed === true? 'hidden':'block'}`}
+                    className={`mx-4 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 hover:bg-zPink-500 transition-all duration-300 ${collapsed === true? 'hidden':'block'}`}
                     onChange={(e)=>platformChange(e.target.value)}
                     value={platform}
                 >
@@ -382,7 +382,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='text'
                         placeholder='Instagram ID'
-                        className={`ml-4 px-4 py-2 text-black border-black border-2 ${(collapsed === true || platform!='Instagram')? 'hidden':'block'}`}
+                        className={`ml-4 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px text-black border-black border-2 transition-all duration-300 ${(collapsed === true || platform!='Instagram')? 'hidden':'block'}`}
                         onChange={(e)=>setInstagramId(e.target.value)}
                         value={instagramId}
                     />
@@ -395,7 +395,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         value={location}
                     /> */}
                     <select 
-                        className={`mx-4 w-72 px-4 py-2 border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
+                        className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
                         onChange={(e)=>setLocation(e.target.value)}
                         value={location}
                     >
@@ -410,15 +410,15 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='number'
                         placeholder='Minimum followers'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setMinFollowers(e.target.value)}
                         value={minFollowers}
                     />
-                    <div className={`px-4 text-sm text-black font-bold`}>Maximum Followers</div>
+                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Maximum Followers</div>
                     <input 
                         type='number'
                         placeholder='Maximum followers'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setMaxFollowers(e.target.value)}
                         value={maxFollowers}
                     />
@@ -431,7 +431,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         value={category}
                     /> */}
                     <select 
-                        className={`mx-4 px-4 py-2 w-72 border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
+                        className={`mx-4 px-4 py-2 w-72 shadow-harsh5px hover:shadow-harsh10px border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
                         onChange={(e)=>setCategory(e.target.value)}
                         value={category}
                     >
@@ -445,13 +445,13 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='text'
                         placeholder='Tags'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                     />
                     <div className={`px-4 py-6 text-black font-bold`}>Average Likes</div>
                     <input 
                         type='number'
                         placeholder='Average Likes'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAvgLikes(e.target.value)}
                         value={avgLikes}
                     />
@@ -459,7 +459,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='number'
                         placeholder='Average Comments'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAvgComments(e.target.value)}
                         value={avgComments}
                     />
@@ -472,15 +472,15 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='number'
                         placeholder='Minimum Subscribers'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setMinYoutubeSubscribers(e.target.value)}
                         value={minSubscribers}
                     />
-                    <div className={`px-4 text-sm text-black font-bold`}>Maximum Subscribers</div>
+                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Maximum Subscribers</div>
                     <input 
                         type='number'
                         placeholder='Maximum Subscribers'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setMaxYoutubeSubscribers(e.target.value)}
                         value={maxSubscribers}
                     />
@@ -488,7 +488,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='number'
                         placeholder='Average Likes'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAvgYoutubeLikes(e.target.value)}
                         value={avgYoutubeLikes}
                     />
@@ -496,7 +496,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='number'
                         placeholder='Average Comments'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAvgYoutubeComments(e.target.value)}
                         value={avgYoutubeComments}
                     />
@@ -505,21 +505,21 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='number'
                         placeholder='Minimum Views'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAvgMinYoutubeViews(e.target.value)}
                         value={avgYoutubeMinViews}
                     />
-                    <div className={`px-4 text-sm text-black font-bold`}>Maximum Average Views</div>
+                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Maximum Average Views</div>
                     <input 
                         type='number'
                         placeholder='Maximum Views'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAvgMaxYoutubeViews(e.target.value)}
                         value={avgYoutubeMaxViews}
                     />
                     <div className={`px-4 py-6 text-black font-bold`}>Audience Country</div>
                     <select 
-                        className={`mx-4 px-4 py-2 border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
+                        className={`mx-4 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
                         onChange={(e)=>setAudienceCountry(e.target.value)}
                         value={audienceCountry}
                     >
@@ -534,15 +534,15 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='number'
                         placeholder='Audience Male Ratio'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAudienceMaleRatio(e.target.value)}
                         value={audienceMaleRatio}
                     />
-                    <div className={`px-4 text-sm text-black font-bold`}>Minimum Audience Ratio</div>
+                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Female Audience Ratio</div>
                     <input 
                         type='number'
                         placeholder='Audience Female Ratio'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAudienceFemaleRatio(e.target.value)}
                         value={audienceFemaleRatio}
                     />
@@ -551,22 +551,22 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <input 
                         type='number'
                         placeholder='Audience Minimum Age'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAudienceMinAge(e.target.value)}
                         value={audienceMinAge}
                     />
-                    <div className={`px-4 text-sm text-black font-bold`}>Maximum Audience Age</div>
+                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Maximum Audience Age</div>
                     <input 
                         type='number'
                         placeholder='Audience Minimum Age'
-                        className={`ml-4 px-4 py-2 border-black border-2`}
+                        className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                         onChange={(e)=>setAudienceMaxAge(e.target.value)}
                         value={audienceMaxAge}
                     />
                 </div>
-                <div className={`bg-zGreen-500 border-2 border-black mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl`} onClick={searchHandler}>Search</div>
+                <div className={`bg-zGreen-500 border-2 shadow-harsh5px hover:shadow-harsh10px border-black mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl`} onClick={searchHandler}>Search</div>
             </div>
-            <div className={`text-black font-bold my-4 mx-4 border-black border-2 min-w-screen right-4 flex flex-col items-center bg-zPink-500 hover:bg-zGreen-500 transition-all duration-300`} onClick={collapseHandler}>{buttonText}</div>
+            <div className={`text-black font-bold my-4 mx-4 shadow-harsh5px hover:shadow-harsh10px border-black border-2 min-w-screen right-4 flex flex-col items-center bg-zPink-500 hover:bg-zGreen-500 transition-all duration-300`} onClick={collapseHandler}>{buttonText}</div>
         </div>
     );
 }
