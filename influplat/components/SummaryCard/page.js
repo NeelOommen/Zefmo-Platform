@@ -101,7 +101,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                         height={20}
                         alt={'Instagram logo'}
                     />
-                    &nbsp; @{platform==='Instagram'?influencerData.instagramId:''}
+                    &nbsp; <a href={`https://www.instagram.com/${influencerData.instagramId}/`} target='_blank' className="text-white">@{platform==='Instagram'?influencerData.instagramId:''}</a>
                 </div>
                 <div className={`my-2 flex flex-row items-center ${platform==='Youtube'?'block':'hidden'}`}>
                     <Image 

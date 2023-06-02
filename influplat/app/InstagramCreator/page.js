@@ -106,6 +106,7 @@ export default function InstagramCreator(){
                 />
                 <div className={`bg-zPink-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${instagramAvailable?'block':'hidden'}`}>
                     <div className="font-bold text-2xl mt-2">Instagram Statistics</div>
+                    <div><a href={`https://www.instagram.com/${instagramData.instagramId}/`} target="_blank" className="text-white font- hover:decoration-white hover:decoration-wavy transition-all duration-300">Head to the page</a></div>
                     <div className="mt-2 text-xl">Followers: {instagramData.followers}</div>
                     <div className="mt-2 text-xl">Average Likes: {instagramData.avgLikes}</div>
                     <div className="mt-2 text-xl">Average Comments: {instagramData.avgComments}</div>
@@ -118,6 +119,7 @@ export default function InstagramCreator(){
 
                 <div className={`bg-zYellow-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${youtubeAvailable?'block':'hidden'}`}>
                     <div className="font-bold text-2xl mt-2">Youtube Statistics</div>
+                    <div><a href={`https://www.youtube.com/${youtubeData.displayId}/`} target="_blank" className="text-white font- hover:decoration-white hover:decoration-wavy transition-all duration-300">Head to the page</a></div>
                     <div className="mt-2 text-xl">Subscribers: {youtubeHistoricalData.subscribers}</div>
                     <div className="mt-2 text-xl">Engagement Rate (Last 20 Uploads): {(youtubeData.engageRateR20 * 100).toFixed(3)}%</div>
                     <div className="mt-2 text-xl">Engagement Rate (Last 1 Year): {(youtubeData.engageRate1Y * 100).toFixed(3)}%</div>
