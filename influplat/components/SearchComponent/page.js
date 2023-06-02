@@ -34,6 +34,8 @@ export default function SearchComponent({setList, influencerList, setValid, vali
     const [audienceMinAge, setAudienceMinAge] = useState(0);
     const [audienceMaleRatio, setAudienceMaleRatio] = useState(0);
     const [audienceFemaleRatio, setAudienceFemaleRatio] = useState(0);
+    const [topicList, setTopicList] = useState([]);
+    const [nicheList, setNicheList] = useState([]);
 
     function getCategories(){
         fetch('https://dev.creatordb.app/v2/topicTable', {
@@ -48,27 +50,33 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             const nicheKeys = Object.keys(data.data.niches)
             const topicKeys = Object.keys(data.data.topics)
             
-            var niches = []
+            var niches = ['']
             for(let i = 0; i<nicheKeys.length; i+=1){
                 var newElement = {
                     'name': data.data.niches[nicheKeys[i]].name,
                     'category': data.data.niches[nicheKeys[i]].category,
                     'channelCnt': data.data.niches[nicheKeys[i]].channelCount,
-                    'tag': nicheKeys[i]
+                    'tag': nicheKeys[i],
+                    'key': i
                 }
 
                 niches.push(newElement)
             }
 
+            niches.sort(function(a,b){
+                return a['name'] > b['name'] ? 1 : ((a['name'] <  b['name']) ? -1 : 0)
+            })
+
             setNicheSet(niches)
 
-            var topics = []
+            var topics = ['']
             for(let i = 0; i<topicKeys.length; i+=1){
                 var newElement = {
                     'name': data.data.topics[topicKeys[i]].name,
                     'category': data.data.topics[topicKeys[i]].category,
                     'channelCnt': data.data.topics[topicKeys[i]].channelCount,
-                    'tag': topicKeys[i]
+                    'tag': topicKeys[i],
+                    'key': (5000 + i)
                 }
 
                 topics.push(newElement)
@@ -336,6 +344,34 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             setAudienceFemaleRatio(0)
         }
 
+        //topic filter
+        console.log(topicList)
+
+         if(topicList.length != 0){
+            const filter = {
+                'filterKey': 'topicIds',
+                'op': '=',
+                'value': topicList
+            }
+
+            filterList.push(filter)
+
+            setTopicList([])
+        }
+
+        //niche filter
+        if(nicheList.length != 0){
+            const filter = {
+                'filterKey': 'nicheIds',
+                'op': '=',
+                'value': nicheList
+            }
+
+            filterList.push(filter)
+
+            setNicheList([])
+        }
+
         return filterList;
     }
 
@@ -388,6 +424,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
         }).then(response => response.json())
         .then(data => {
             setList(data)
+            console.log(data)
             setValid(true)
         })
         .catch(error => {
@@ -436,10 +473,40 @@ export default function SearchComponent({setList, influencerList, setValid, vali
         }
     }
 
+    function addTopic(){
+        var newTopic = topic
+        setTopic('')
+
+        if(newTopic != ''){
+            var currentTopics = topicList
+            currentTopics.push(newTopic)
+            setTopicList(currentTopics)
+        }
+    }
+
+    function addNiche(){
+        var newNiche = niche
+        setNiche('')
+
+        if(newNiche != ''){
+            var currentNiches = nicheList
+            currentNiches.push(newNiche)
+            setNicheList(currentNiches)
+        }
+    }
+
     function clearTag(){
         var currentTags = tags
         currentTags = []
         setTags(currentTags)
+    }
+
+    function clearTopic(){
+        setTopicList([])
+    }
+
+    function clearNiche(){
+        setNicheList([])
     }
 
     const countryOptions = ['','Afghanistan','Albania','Algeria','American Samoa','Andorra','Angola','Anguilla','Antarctica','Antigua & Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bermuda','Bhutan','Bolivia','Bosnia & Herzegovina','Bosnia and Herzegovina','Botswana','Brazil','British Indian Ocean Territory','British Virgin Islands','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Cape Verde','Cayman Islands','Chad','Chile','China','Christmas Island','Colombia','Congo - Brazzaville','Congo - Kinshasa','Costa Rica','Croatia','Cuba','Curaçao','Cyprus','Czech Republic','Czechia','Côte d’Ivoire','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Eritrea','Estonia','Eswatini','Ethiopia','Falkland Islands (Islas Malvinas)','Faroe Islands','Fiji','Finland','France','French Guiana','French Polynesia','Gabon','Gambia','Georgia','Germany','Ghana','Gibraltar','Greece','Greenland','Grenada','Guadeloupe','Guam','Guatemala','Guernsey','Guinea','Guinea-Bissau','Guyana','Haiti','Heard & McDonald Islands','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Isle of Man','Israel','Italy','Ivory Coast','Jamaica','Japan','Jersey','Jordan','Kazakhstan','Kenya','Kosovo','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Macao','Macedonia','Madagascar','Malaysia','Maldives','Mali','Malta','Martinique','Mauritania','Mauritius','Mayotte','Mexico','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar (Burma)','Myanmar','Namibia','Nepal','Netherlands','New Caledonia','New Zealand','Nicaragua','Nigeria','Niue','North Korea','North Macedonia','Norway','Oman','Pakistan','Palau','Palestine','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Puerto Rico','Qatar','Romania','Russia','Rwanda','Réunion','Samoa','San Marino','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Sint Maarten','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Georgia & South Sandwich Islands','South Korea','South Sudan','Spain','Sri Lanka','St. Barthélemy','St. Kitts & Nevis','St. Lucia','St. Martin','St. Vincent & Grenadines','Sudan','Suriname','Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad & Tobago','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Turks and Caicos Islands','Türkiye','U.S. Outlying Islands','U.S. Virgin Islands','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Western Sahara','Yemen','Zambia','Zimbabwe','Åland Islands']
@@ -530,7 +597,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         }
                     </select>
                     <div className={`px-4 py-6 text-black font-bold`}>Tags</div>
-                    <div className="flex flex-row">
+                    <div className="flex flex-wrap">
                         <input 
                             type='text'
                             placeholder='Tags'
@@ -584,29 +651,47 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         value={maxSubscribers}
                     />
                     <div className={`px-4 mt-4 text-sm text-black font-bold`}>Topics</div>
-                    <select 
-                        className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 transition-all duration-300`}
-                        onChange={(e)=>setTopic(e.target.value)}
-                        value={topic}
-                    >
-                        {
-                            topicSet.map((topic) => (
-                                <option key={topic.name} value={topic.tag}>{topic.name}, {topic.category}, with {topic.channelCnt} channels</option>
-                            ))
-                        }
-                    </select>
+                    <div className="flex flex-wrap">
+                        <select 
+                            className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 transition-all duration-300`}
+                            onChange={(e)=>setTopic(e.target.value)}
+                            value={topic}
+                        >
+                            {
+                                topicSet.map((topic) => (
+                                    <option key={topic.key} value={topic.tag}>{topic.name}, {topic.category}, with {topic.channelCnt} channels</option>
+                                ))
+                            }
+                        </select>
+                        <div className="border-2 border-black mx-4 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={addTopic}>+</div>
+                        <div className="border-2 border-black px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={clearTopic}>Clear</div>
+                    </div>
+                    <div className="flex flex-wrap mx-4">
+                        <ArrayElements 
+                            items={topicList}
+                        />
+                    </div>
                     <div className={`px-4 mt-4 text-sm text-black font-bold`}>Niches</div>
-                    <select 
-                        className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 transition-all duration-300`}
-                        onChange={(e)=>setNiche(e.target.value)}
-                        value={niche}
-                    >
-                        {
-                            nicheSet.map((niche) => (
-                                <option key={niche.name} value={niche.tag}>{niche.name}, {niche.category}, with {niche.channelCnt} channels</option>
-                            ))
-                        }
-                    </select>
+                    <div className="flex flex-wrap">
+                        <select 
+                            className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 transition-all duration-300`}
+                            onChange={(e)=>setNiche(e.target.value)}
+                            value={niche}
+                        >
+                            {
+                                nicheSet.map((niche) => (
+                                    <option key={niche.key} value={niche.tag}>{niche.name}, {niche.category}, with {niche.channelCnt} channels</option>
+                                ))
+                            }
+                        </select>
+                        <div className="border-2 border-black mx-4 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={addNiche}>+</div>
+                        <div className="border-2 border-black px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={clearNiche}>Clear</div>
+                    </div>
+                    <div className="flex flex-wrap mx-4">
+                        <ArrayElements 
+                            items={nicheList}
+                        />
+                    </div>
                     <div className={`px-4 py-6 text-black font-bold`}>Average Likes</div>
                     <input 
                         type='number'
