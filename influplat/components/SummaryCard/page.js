@@ -40,7 +40,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                 setYoutubeData(data.data.basicYoutube)
                 setYoutubeAdvanced(data.data.detailYoutube)
                 setYoutubeHistory(data.data.histories[0])
-
+                console.log(youtubeHistory)
             })
             .catch(error => {
                 console.log(error)
@@ -110,7 +110,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                         height={20}
                         alt={'Youtube logo'}
                     />
-                    &nbsp; {youtubeData.displayId}
+                    &nbsp; <a href={`https://www.youtube.com/${youtubeData.displayId}`} target='_blank' className="text-white hover:text-red-500 transition-all duration-300">{youtubeData.displayId}</a>
                 </div>
                 <div className={`my-2 flex flex-row items-center ${(platform === 'Youtube' && youtubeData.instagramId!='' )?'block':'hidden'}`}>
                     <Image 
@@ -119,13 +119,13 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                         height={20}
                         alt={'Instagram logo'}
                     />
-                    &nbsp; @{youtubeData.instagramId}
+                    &nbsp; <a href={`https://www.instagram.com/${youtubeData.instagramId}/`} target="_blank" className="text-white hover:text-zPink-500 transition-all duration-300">@{youtubeData.instagramId}</a>
                 </div>  
                 <div className={`${platform==='Instagram'?'block':'hidden'}`}>
                     Followers: {platform==='Instagram'?influencerData.followers:''}
                 </div>
-                <div className={`${platform==='Youtube'?'block':'hidden'}`}>
-                    Subscribers: {platform==='Youtube'?youtubeHistory.subscribers:''}
+                <div className={`${(platform==='Youtube' && youtubeHistory != undefined)?'block':'hidden'}`}>
+                    Subscribers: {(platform==='Youtube' && youtubeHistory != undefined)?youtubeHistory.subscribers:''}
                 </div>
                 <div className={`${platform==='Instagram'?'block':'hidden'}`}>
                     Engagement Rate: {platform==='Instagram'?`${(influencerData.engageRate * 100).toFixed(3)}%`:''}

@@ -137,9 +137,6 @@ export default function InstagramCreator(){
                                 />
                             </div>
                         ):('No Emails Found')}
-                        {/* <ArrayElements 
-                            items={emails}
-                        /> */}
                     </div>
                 </div>
             </div>
