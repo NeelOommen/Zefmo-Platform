@@ -1,4 +1,5 @@
 'use client';
+import ArrayElements from "@/components/ArrayElements/page";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -78,6 +79,10 @@ export default function InstagramCreator(){
                     <div className="mt-2 text-xl">Average Likes: {instagramData.avgLikes}</div>
                     <div className="mt-2 text-xl">Average Comments: {instagramData.avgComments}</div>
                     <div className="mt-2 text-xl mb-2">Engagement Rate: {(instagramData.engageRate * 100).toFixed(3)}%</div>
+                    <div className="mt-2 text-md">Tags:</div>
+                    <ArrayElements 
+                        items={instagramData.hashtags}
+                    />
                 </div>
 
                 <div className="bg-zYellow-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px">
