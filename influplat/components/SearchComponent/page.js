@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NextCors from 'nextjs-cors'
 import ArrayElements from "../ArrayElements/page";
 
@@ -6,6 +6,8 @@ import ArrayElements from "../ArrayElements/page";
 export default function SearchComponent({setList, influencerList, setValid, validFlag, platform, setPlatform}) {
     const [collapsed, setCollapsed] = useState(true);
     const [buttonText, setButtonText] = useState('Show Filters');
+    const [nicheSet, setNicheSet] = useState([]);
+    const [topicSet, setTopicSet] = useState([]);
 
     //instagram filters
     const [instagramId, setInstagramId] = useState('');
@@ -25,12 +27,63 @@ export default function SearchComponent({setList, influencerList, setValid, vali
     const [avgYoutubeLikes, setAvgYoutubeLikes] = useState(0);
     const [avgYoutubeMaxViews, setAvgMaxYoutubeViews] = useState(0);
     const [avgYoutubeMinViews, setAvgMinYoutubeViews] = useState(0);
-    //category topic niche
+    const [topic, setTopic] = useState('');
+    const [niche, setNiche] = useState('');
     const [audienceCountry, setAudienceCountry] = useState('');
     const [audienceMaxAge, setAudienceMaxAge] = useState(0);
     const [audienceMinAge, setAudienceMinAge] = useState(0);
     const [audienceMaleRatio, setAudienceMaleRatio] = useState(0);
     const [audienceFemaleRatio, setAudienceFemaleRatio] = useState(0);
+
+    function getCategories(){
+        fetch('https://dev.creatordb.app/v2/topicTable', {
+          headers: {
+            'Accept': 'application/json',
+            'apiId': 'LE6DPZQkR3TQShxofXoD2j8qCBu1-f0jti665m1t50dwDD12W'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+            //console.log(data)
+            const nicheKeys = Object.keys(data.data.niches)
+            const topicKeys = Object.keys(data.data.topics)
+            
+            var niches = []
+            for(let i = 0; i<nicheKeys.length; i+=1){
+                var newElement = {
+                    'name': data.data.niches[nicheKeys[i]].name,
+                    'category': data.data.niches[nicheKeys[i]].category,
+                    'channelCnt': data.data.niches[nicheKeys[i]].channelCount,
+                    'tag': nicheKeys[i]
+                }
+
+                niches.push(newElement)
+            }
+
+            setNicheSet(niches)
+
+            var topics = []
+            for(let i = 0; i<topicKeys.length; i+=1){
+                var newElement = {
+                    'name': data.data.topics[topicKeys[i]].name,
+                    'category': data.data.topics[topicKeys[i]].category,
+                    'channelCnt': data.data.topics[topicKeys[i]].channelCount,
+                    'tag': topicKeys[i]
+                }
+
+                topics.push(newElement)
+            }
+
+            setTopicSet(topics)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }
+
+    useEffect(() => {
+        getCategories();
+    },[])
 
     function createInstagramFilters(){
         var filterList = []
@@ -530,6 +583,30 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setMaxYoutubeSubscribers(e.target.value)}
                         value={maxSubscribers}
                     />
+                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Topics</div>
+                    <select 
+                        className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 transition-all duration-300`}
+                        onChange={(e)=>setTopic(e.target.value)}
+                        value={topic}
+                    >
+                        {
+                            topicSet.map((topic) => (
+                                <option key={topic.name} value={topic.tag}>{topic.name}, {topic.category}, with {topic.channelCnt} channels</option>
+                            ))
+                        }
+                    </select>
+                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Niches</div>
+                    <select 
+                        className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 transition-all duration-300`}
+                        onChange={(e)=>setNiche(e.target.value)}
+                        value={niche}
+                    >
+                        {
+                            nicheSet.map((niche) => (
+                                <option key={niche.name} value={niche.tag}>{niche.name}, {niche.category}, with {niche.channelCnt} channels</option>
+                            ))
+                        }
+                    </select>
                     <div className={`px-4 py-6 text-black font-bold`}>Average Likes</div>
                     <input 
                         type='number'

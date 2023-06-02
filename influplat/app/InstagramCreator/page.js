@@ -9,6 +9,10 @@ export default function InstagramCreator(){
     const [youtubeData, setYoutubeData] = useState('');
     const [youtubeAdvancedData, setYoutubeAdvancedData] = useState('');
     const [youtubeHistoricalData, setYoutubeHistoryData] = useState('');
+    const [emails, setEmails] = useState([]);
+
+    const [instagramAvailable, setIAvailable] = useState(false);
+    const [youtubeAvailable, setYAvailable] = useState(false);
 
     function getProps(){
         const iStr = localStorage.getItem('instagramSearch')
@@ -18,6 +22,7 @@ export default function InstagramCreator(){
 
         //instagram
         if(iStr != "NOT_AVAILABLE"){
+            setIAvailable(true)
             fetch(`https://dev.creatordb.app/v2/instagramBasic?instagramId=${iStr}`, {
                 headers: {
                   'Accept': 'application/json',
@@ -27,15 +32,20 @@ export default function InstagramCreator(){
             .then(response => response.json())
             .then(data => {
                 setInstagramData(data.data.basicInstagram)
-                console.log(data.data.basicInstagram)
+                //console.log(data.data.basicInstagram)
             })
             .catch(error => {
                 console.log(error)
             })
         }
+        else{
+            setIAvailable(false)
+        }
+        
 
         //youtube data
         if(yStr != "NOT_AVAILABLE"){
+            setYAvailable(true)
             fetch(`https://dev.creatordb.app/v2/youtubeDetail?youtubeId=${yStr}`, {
                 headers: {
                     'Accept': 'application/json',
@@ -48,12 +58,33 @@ export default function InstagramCreator(){
                 setYoutubeAdvancedData(data.data.detailYoutube)
                 setYoutubeHistoryData(data.data.histories[0])
                 console.log(youtubeData)
-                console.log(youtubeAdvancedData)
-                console.log(youtubeHistoricalData)
+                //console.log(youtubeAdvancedData)
+                //console.log(youtubeHistoricalData)
+
+                if(youtubeData.hasEmail === true){
+                    fetch(`https://dev.creatordb.app/v2/youtubeEmail?youtubeId=${youtubeData.youtubeId}`, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.data)
+                        setEmails(data.data)
+                        
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+                }
             })
             .catch(error => {
                 console.log(error)
             })  
+        }
+        else{
+            setYAvailable(false)
         }
     }
 
@@ -73,7 +104,7 @@ export default function InstagramCreator(){
                     alt={`${instagramData.instagramName}'s Picture`}
                     className="mt-2 rounded-full border-2 border-black shadow-harsh5px"
                 />
-                <div className="bg-zPink-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px">
+                <div className={`bg-zPink-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${instagramAvailable?'block':'hidden'}`}>
                     <div className="font-bold text-2xl mt-2">Instagram Statistics</div>
                     <div className="mt-2 text-xl">Followers: {instagramData.followers}</div>
                     <div className="mt-2 text-xl">Average Likes: {instagramData.avgLikes}</div>
@@ -85,7 +116,7 @@ export default function InstagramCreator(){
                     />
                 </div>
 
-                <div className="bg-zYellow-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px">
+                <div className={`bg-zYellow-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${youtubeAvailable?'block':'hidden'}`}>
                     <div className="font-bold text-2xl mt-2">Youtube Statistics</div>
                     <div className="mt-2 text-xl">Subscribers: {youtubeHistoricalData.subscribers}</div>
                     <div className="mt-2 text-xl">Engagement Rate (Last 20 Uploads): {(youtubeData.engageRateR20 * 100).toFixed(3)}%</div>
@@ -97,6 +128,19 @@ export default function InstagramCreator(){
                     <div className="mt-2 text-xl">Average views (Last 20 Uploads): {youtubeData.avgViewsR20}</div>
                     <div className="mt-2 text-xl">Average views (Last 1 Year): {youtubeData.avgViews1Y}</div>
                     <div className="mt-2 text-xl">Average Audience Age: {youtubeAdvancedData.dgAvgAge === 0?((youtubeAdvancedData.dgAvgAge) + ' Years'):'Not Available'}</div>
+                    <div className="mt-2 text-xl">Emails:</div>
+                    <div>
+                        {emails.length>0?(
+                            <div className="flex flex-wrap">
+                                <ArrayElements 
+                                    items={emails}
+                                />
+                            </div>
+                        ):('No Emails Found')}
+                        {/* <ArrayElements 
+                            items={emails}
+                        /> */}
+                    </div>
                 </div>
             </div>
         </div>
