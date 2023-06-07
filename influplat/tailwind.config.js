@@ -18,6 +18,7 @@ module.exports = {
       },
       colors: {
         zYellow: {
+          100: '#fae3b4',
           500: '#f2b944'
         },
         zRed: {
@@ -27,6 +28,7 @@ module.exports = {
           500: '#e61b7b'
         },
         zPurple: {
+          100: '#c5bed7',
           500: '#3d277b'
         },
         zGreen: {

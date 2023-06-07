@@ -77,9 +77,9 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
     }
 
     return(
-        <a href='/InstagramCreator' onClick={storeData}>
+        <a href='/InstagramCreator' onClick={storeData} target='_blank'>
             <div 
-            className="max-w-full my-4 mx-1 h-auto bg-zGreen-500 shadow-harsh10px p-4 border-black border-2 flex flex-col items-center text-black"
+            className="max-w-full md:w-80 my-4 mx-1 md:mx-2 h-auto bg-zGreen-500 shadow-harsh10px p-4 border-black border-2 flex flex-col items-center text-black"
             >
                 <Image 
                     src={platform === 'Instagram' ? influencerData.avatar:defaultPFP}

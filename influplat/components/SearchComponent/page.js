@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import NextCors from 'nextjs-cors'
 import ArrayElements from "../ArrayElements/page";
 
 
 export default function SearchComponent({setList, influencerList, setValid, validFlag, platform, setPlatform}) {
-    const [collapsed, setCollapsed] = useState(true);
+    const [collapsed, setCollapsed] = useState(false);
     const [buttonText, setButtonText] = useState('Show Filters');
     const [nicheSet, setNicheSet] = useState([]);
     const [topicSet, setTopicSet] = useState([]);
@@ -91,6 +90,13 @@ export default function SearchComponent({setList, influencerList, setValid, vali
 
     useEffect(() => {
         getCategories();
+        function resizeManagement(){
+            if(window.innerWidth>768){
+                setCollapsed(false)
+            }
+        }
+
+        window.addEventListener('resize', resizeManagement)
     },[])
 
     function createInstagramFilters(){
@@ -516,13 +522,13 @@ export default function SearchComponent({setList, influencerList, setValid, vali
     const youtubeCountryList = ['','Afghanistan','Albania','Algeria','American Samoa','Andorra','Angola','Anguilla','Antarctica','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bermuda','Bhutan','Bolivia','Bosnia & Herzegovina','Bosnia and Herzegovina','Botswana','Bouvet Island','British Indian Ocean Territory','British Virgin Islands','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Cape Verde','Caribbean Netherlands','Cayman Islands','Central African Republic','Chad','Chile','China','Christmas Island','Cocos (Keeling) Islands','Cocos Islands','Colombia','Comoros','Congo - Kinshasa','Cook Islands','Costa Rica','Croatia','Cuba','Curacao','Curaçao','Cyprus','Czech Republic','Czechia','Côte d’Ivoire','Democratic Republic of the Congo','Denmark','Djibouti','Dominica','Dominican Republic','East Timor','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Ethiopia','Falkland Islands','Faroe Islands','Fiji','Finland','France','French Guiana','French Polynesia','French Southern Territories','Gabon','Gambia','Georgia','Germany','Ghana','Gibraltar','Greece','Greenland','Grenada','Guadeloupe','Guam','Guatemala','Guernsey','Guinea','Guinea-Bissau','Guyana','Haiti','Heard & McDonald Islands','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Isle of Man','Israel','Italy','Ivory Coast','Jamaica','Japan','Jersey','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Macao','Macau','Macedonia','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Martinique','Mauritania','Mauritius','Mayotte','Mexico','Micronesia','Moldova','Monaco','Mongolia','Montenegro','Montserrat','Morocco','Mozambique','Myanmar (Burma)','Myanmar','Namibia','Nepal','Netherlands','New Caledonia','New Zealand','Nicaragua','Niger','Nigeria','Niue','North Korea','North Macedonia','Northern Mariana Islands','Norway','Oman','Pakistan','Palau','Palestine','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Pitcairn','Poland','Portugal','Puerto Rico','Qatar','Republic of the Congo','Reunion','Romania','Russia','Rwanda','Réunion','Saint Barthelemy','Saint Helena','Saint Kitts and Nevis','Saint Lucia','Saint Martin','Saint Pierre and Miquelon','Saint Vincent and the Grenadines','Samoa','San Marino','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Georgia & South Sandwich Islands','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Svalbard and Jan Mayen','Swaziland','Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad & Tobago','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Turks and Caicos Islands','Tuvalu','Türkiye','U.S. Outlying Islands','U.S. Virgin Islands','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Vatican','Venezuela','Vietnam','Wallis & Futuna','Wallis and Futuna','Western Sahara','Yemen','Zambia','Zimbabwe','Åland Islands']
 
     return(
-        <div className={`w-full py-6 bg-zYellow-500 text-black transition-all duration-300`}>
+        <div className={`w-full md:w-96 py-6 h-auto md:h-full md:overflow-y-scroll md:no-scrollbar bg-white hover:bg-zYellow-100 text-black transition-all duration-300 md:border-2 md:border-black md:ml-4 md:shadow-harsh10px`}>
 
-            <div className={`text-black font-bold my-2 ml-4 ${collapsed===true?'text-lg':'text-4xl'} transition-all duration-300`}>Search</div>
+            <div className={`text-zYellow-500 font-bold mt-2 mb-2 md:mb-0 ml-4 ${collapsed===true?'text-lg':'text-4xl'} transition-all duration-300`}>Search</div>
 
             <div className={`mx-4${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>
                 {/* collapsible */}
-                <div className={`px-4 py-6 text-black font-bold ${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>Platform</div>
+                <div className={`px-4 py-6 md:py-2 text-black font-bold ${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>Platform</div>
                 <select 
                     className={`mx-4 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 hover:bg-zPink-500 transition-all duration-300 ${collapsed === true? 'hidden':'block'}`}
                     onChange={(e)=>platformChange(e.target.value)}
@@ -531,9 +537,9 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                     <option value='Instagram'>Instagram</option>
                     <option value='Youtube'>Youtube</option>
                 </select>
-                <div className={`max-w-screen ${(collapsed === true || platform!='Instagram')? 'hidden':'block'}`}>
+                <div className={`max-w-full ${(collapsed === true || platform!='Instagram')? 'hidden':'block'}`}>
                     {/* Instagram Filters */}
-                    <div className={`px-4 py-6 text-black font-bold`}>Instagram ID</div>
+                    <div className={`px-4 py-6 md:py-2 text-black font-bold`}>Instagram ID</div>
                     <input 
                         type='text'
                         placeholder='Instagram ID'
@@ -541,7 +547,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setInstagramId(e.target.value)}
                         value={instagramId}
                     />
-                    <div className={`px-4 py-6 text-black font-bold`}>Country</div>
+                    <div className={`px-4 py-6 md:py-2 text-black font-bold`}>Country</div>
                     {/* <input 
                         type='text'
                         placeholder='Country'
@@ -560,7 +566,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                             ))
                         }
                     </select>
-                    <div className={`px-4 pt-6 text-black font-bold`}>Followers</div>
+                    <div className={`px-4 pt-6 md:pt-3 text-black font-bold`}>Followers</div>
                     <div className={`px-4 text-sm text-black font-bold`}>Minimum Followers</div>
                     <input 
                         type='number'
@@ -569,7 +575,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setMinFollowers(e.target.value)}
                         value={minFollowers}
                     />
-                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Maximum Followers</div>
+                    <div className={`px-4 mt-4 md:mt-2 text-sm text-black font-bold`}>Maximum Followers</div>
                     <input 
                         type='number'
                         placeholder='Maximum followers'
@@ -577,7 +583,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setMaxFollowers(e.target.value)}
                         value={maxFollowers}
                     />
-                    <div className={`px-4 py-6 text-black font-bold`}>Category</div>
+                    <div className={`px-4 py-6 md:py-2 text-black font-bold`}>Category</div>
                     {/* <input 
                         type='text'
                         placeholder='Category'
@@ -586,7 +592,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         value={category}
                     /> */}
                     <select 
-                        className={`mx-4 px-4 py-2 w-72 shadow-harsh5px hover:shadow-harsh10px border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
+                        className={`mx-4 px-4 md:px-2 py-2 w-72 shadow-harsh5px hover:shadow-harsh10px border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
                         onChange={(e)=>setCategory(e.target.value)}
                         value={category}
                     >
@@ -596,12 +602,12 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                             ))
                         }
                     </select>
-                    <div className={`px-4 py-6 text-black font-bold`}>Tags</div>
-                    <div className="flex flex-wrap">
+                    <div className={`px-4 py-6 md:py-2 text-black font-bold`}>Tags</div>
+                    <div className="flex flex-wrap md:mx-4 max-w-full">
                         <input 
                             type='text'
                             placeholder='Tags'
-                            className={`ml-4 px-4 py-2 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
+                            className={`ml-4 md:ml-0 px-4 py-2 md:py-0 border-black border-2 shadow-harsh5px hover:shadow-harsh10px transition-all duration-300`}
                             onChange={(e)=>setNTag(e.target.value)}
                             value={nTag}
                         />
@@ -613,7 +619,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                             items={tags}
                         />
                     </div>
-                    <div className={`px-4 py-6 text-black font-bold`}>Average Likes</div>
+                    <div className={`px-4 py-6 md:py-0 text-black font-bold`}>Average Likes</div>
                     <input 
                         type='number'
                         placeholder='Average Likes'
@@ -621,7 +627,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setAvgLikes(e.target.value)}
                         value={avgLikes}
                     />
-                    <div className={`px-4 py-6 text-black font-bold`}>Average Comments</div>
+                    <div className={`px-4 py-6 md:py-2 text-black font-bold`}>Average Comments</div>
                     <input 
                         type='number'
                         placeholder='Average Comments'
@@ -633,7 +639,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
 
                 <div className={`${(collapsed === true || platform!='Youtube')? 'hidden':'block'}`}>
                     {/* Youtube Filters */}
-                    <div className={`px-4 py-6 text-black font-bold`}>Subscribers</div>
+                    <div className={`px-4 py-6 md:py-2 text-black font-bold`}>Subscribers</div>
                     <div className={`px-4 text-sm text-black font-bold`}>Minimum Subscribers</div>
                     <input 
                         type='number'
@@ -642,7 +648,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setMinYoutubeSubscribers(e.target.value)}
                         value={minSubscribers}
                     />
-                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Maximum Subscribers</div>
+                    <div className={`px-4 mt-4 md:mt-2 text-sm text-black font-bold`}>Maximum Subscribers</div>
                     <input 
                         type='number'
                         placeholder='Maximum Subscribers'
@@ -650,7 +656,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setMaxYoutubeSubscribers(e.target.value)}
                         value={maxSubscribers}
                     />
-                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Topics</div>
+                    <div className={`px-4 mt-4 md:mt-2 text-sm text-black font-bold`}>Topics</div>
                     <div className="flex flex-wrap">
                         <select 
                             className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 transition-all duration-300`}
@@ -671,7 +677,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                             items={topicList}
                         />
                     </div>
-                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Niches</div>
+                    <div className={`px-4 mt-4 md:mt-2 text-sm text-black font-bold`}>Niches</div>
                     <div className="flex flex-wrap">
                         <select 
                             className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 transition-all duration-300`}
@@ -692,7 +698,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                             items={nicheList}
                         />
                     </div>
-                    <div className={`px-4 py-6 text-black font-bold`}>Average Likes</div>
+                    <div className={`px-4 py-6 md:py-2 text-black font-bold`}>Average Likes</div>
                     <input 
                         type='number'
                         placeholder='Average Likes'
@@ -700,7 +706,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setAvgYoutubeLikes(e.target.value)}
                         value={avgYoutubeLikes}
                     />
-                    <div className={`px-4 py-6 text-black font-bold`}>Average Comments</div>
+                    <div className={`px-4 py-6 md:py-2 text-black font-bold`}>Average Comments</div>
                     <input 
                         type='number'
                         placeholder='Average Comments'
@@ -708,7 +714,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setAvgYoutubeComments(e.target.value)}
                         value={avgYoutubeComments}
                     />
-                    <div className={`px-4 py-6 text-black font-bold`}>Views</div>
+                    <div className={`px-4 py-6 md:py-2 text-black font-bold`}>Views</div>
                     <div className={`px-4 text-sm text-black font-bold`}>Minimum Average Views</div>
                     <input 
                         type='number'
@@ -717,7 +723,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setAvgMinYoutubeViews(e.target.value)}
                         value={avgYoutubeMinViews}
                     />
-                    <div className={`px-4 mt-4 text-sm text-black font-bold`}>Maximum Average Views</div>
+                    <div className={`px-4 mt-4 md:mt-2 text-sm text-black font-bold`}>Maximum Average Views</div>
                     <input 
                         type='number'
                         placeholder='Maximum Views'
@@ -725,9 +731,9 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                         onChange={(e)=>setAvgMaxYoutubeViews(e.target.value)}
                         value={avgYoutubeMaxViews}
                     />
-                    <div className={`px-4 py-6 text-black font-bold`}>Audience Country</div>
+                    <div className={`px-4 pt-6 pb-6 md:pb-2 text-black font-bold`}>Audience Country</div>
                     <select 
-                        className={`mx-4 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
+                        className={`mx-4 px-4 py-2 md:w-4/5 shadow-harsh5px hover:shadow-harsh10px border-black border-2 hover:bg-zPink-500 transition-all duration-300`}
                         onChange={(e)=>setAudienceCountry(e.target.value)}
                         value={audienceCountry}
                     >
@@ -774,7 +780,7 @@ export default function SearchComponent({setList, influencerList, setValid, vali
                 </div>
                 <div className={`bg-zGreen-500 border-2 shadow-harsh5px hover:shadow-harsh10px border-black mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl active:scale-90 active:shadow-harsh5px`} onClick={searchHandler}>Search</div>
             </div>
-            <div className={`text-black font-bold my-4 mx-4 shadow-harsh5px hover:shadow-harsh10px border-black border-2 min-w-screen right-4 flex flex-col items-center bg-zPink-500 hover:bg-zGreen-500 transition-all duration-300 active:scale-90 active:shadow-harsh5px`} onClick={collapseHandler}>{buttonText}</div>
+            <div className={`text-black font-bold my-4 mx-4 shadow-harsh5px hover:shadow-harsh10px border-black border-2 min-w-screen right-4 flex flex-col items-center bg-zPink-500 hover:bg-zGreen-500 transition-all duration-300 active:scale-90 active:shadow-harsh5px md:hidden`} onClick={collapseHandler}>{buttonText}</div>
         </div>
     );
 }
