@@ -15,7 +15,7 @@ export default function Home() {
   const [platform, setPlatform] = useState('Instagram')
 
   return (
-    <main className='min-h-screen bg-zYellow-500 max-w-screen flex flex-col items-center'>
+    <main className='min-h-screen md:max-h-screen md:overflow-y-scroll bg-zYellow-500 max-w-screen flex flex-col items-center'> 
       <div className='flex w-full'>
         {/* toprow */}
         <Image 
@@ -24,20 +24,22 @@ export default function Home() {
           className='w-32 h-32 ml-4 block left-0'
         />
       </div>
-      <div className='left-0 top-0 h-auto w-full flex flex-col items-center'>
-        {/* Searchtab */}
-        <SearchComponent setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid} platform={platform} setPlatform={setPlatform}/>
-      </div>
-      <div className='w-full h-fit px-4 py-4 flex flex-col items-center'>
-        {/* results */}
-        <div className='w-full mx-1 bg-zPurple-500 border-black border-2 py-2 flex flex-col items-center shadow-harsh10px'>
-          Results
-          <ResultSummary setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid} platform={platform} setPlatform={setPlatform}/>
+      <div className='flex flex-col md:flex-row w-full h-full mb-4 md:h-2/5 md:overflow-clip'>
+        <div className='left-0 top-0 w-full md:w-fit items-center'>
+          {/* Searchtab */}
+          <SearchComponent setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid} platform={platform} setPlatform={setPlatform}/>
+        </div>
+        <div className='w-full h-fit px-4 py-4 md:py-0 flex flex-col items-center'>
+          {/* results */}
+          <div className='w-full mx-1 bg-zPurple-500 border-black border-2 py-2 flex flex-col items-center shadow-harsh10px'>
+            Results
+            <ResultSummary setList={setInfluencerList} influencerList={influencerNameList} setValid={setValidity} validFlag={dataValid} platform={platform} setPlatform={setPlatform}/>
+          </div>
         </div>
       </div>
       <div className='w-full bg-zPurple-500 mt-2flex flex-row'>
         {/* footer */}
-        <div className='mx-4 my-2 bg-white py-2 px-2 border-2 border-black flex flex-col items-center text-sm text-black'>
+        <div className='mx-4 my-2 w-fit bg-white py-1 px-2 border-2 border-black flex flex-col items-center text-sm text-black'>
           <span><a  href="https://icons8.com/icon/32292/instagram" className='underline text-zPink-500 decoration-wavy' target='_blank'>Instagram</a>, <a  href="https://icons8.com/icon/37325/youtube" className='underline text-zPink-500 decoration-wavy' target='_blank'>YouTube</a></span> icon by <a href="https://icons8.com" className='underline text-zGreen-500 decoration-wavy' target='_blank'>Icons8</a>
         </div>
       </div>
