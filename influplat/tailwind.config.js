@@ -25,6 +25,7 @@ module.exports = {
           500: '#e5222f'
         },
         zPink: {
+          100: '#f8bbd7',
           500: '#e61b7b'
         },
         zPurple: {
@@ -34,6 +35,12 @@ module.exports = {
         zGreen: {
           500: "#93c255"
         },
+        softBlack: {
+          500: '#111111'
+        },
+        softWhite: {
+          500: '#f0f0f0'
+        }
       },
     },
   },

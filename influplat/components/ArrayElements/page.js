@@ -5,7 +5,7 @@ export default function ArrayElements({ items }){
     const [emptyItems, setEmptyItems] = useState(true);
 
     function checkItems(){
-        if(Array.isArray(items)){
+        if(Array.isArray(items) && items.length>0){
             setEmptyItems(false)
         }
         else{
@@ -26,11 +26,11 @@ export default function ArrayElements({ items }){
                 <div className="flex flex-wrap">
                     {
                         items.map((item) => (
-                        <ArrayItem 
-                            key={item}
-                            displayText={item}
-                        />
-                        ))
+                            <ArrayItem 
+                                key={item}
+                                displayText={item}
+                            />
+                            ))
                     }
                 </div>
             )
