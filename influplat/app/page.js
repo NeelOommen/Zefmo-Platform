@@ -103,9 +103,9 @@ export default function Home() {
   return (
     <main className='min-h-screen md:max-h-screen bg-zYellow-500 min-w-screen max-w-screen flex flex-col items-center'> 
 
-      <div className='flex w-full'>
+      <div className='flex w-full flex-row items-center'>
         {/* toprow */}
-        <div className={`h-12 w-12 bg-zGreen-500`} onClick={menuCollapse}>Menu</div>
+        <div className={`h-12 bg-zGreen-500 mx-2 border-2 border-black w-fit p-2`} onClick={menuCollapse}>Menu</div>
         <Image 
           src={logo}
           alt="Company logo"
