@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ArrayItem from "../ArrayItem/page";
 
 export default function ArrayElements({ items }){
-    const [emptyItems, setEmptyItems] = useState(true);
+    const [emptyItems, setEmptyItems] = useState(true)
 
     function checkItems(){
         if(Array.isArray(items) && items.length>0){
@@ -14,9 +14,8 @@ export default function ArrayElements({ items }){
     }
 
     useEffect(() => {
-        checkItems();
-    }, [items, emptyItems])
-
+        checkItems()
+    }, [items])
 
     return(
         <div className="max-w-full overflow-x-hidden h-auto">

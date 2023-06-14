@@ -2,7 +2,7 @@
 import ArrayElements from "@/components/ArrayElements/page";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";6
 
 export default function InstagramCreator(){
     const [instagramData, setInstagramData] = useState('');
@@ -32,7 +32,7 @@ export default function InstagramCreator(){
             .then(response => response.json())
             .then(data => {
                 setInstagramData(data.data.basicInstagram)
-                //console.log(data.data.basicInstagram)
+                console.log(data.data.basicInstagram)
             })
             .catch(error => {
                 console.log(error)

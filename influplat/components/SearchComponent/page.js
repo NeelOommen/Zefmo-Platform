@@ -468,10 +468,10 @@ export default function SearchComponent({setList, influencerList, setValid, vali
 
 
         if(newTag !== '#'){
-            var currentTags = tags
-            currentTags.push(newTag)
-            setTags(currentTags)
-            console.log(tags)
+            setTags([
+                ...tags,
+                newTag
+            ])
         }
     }
 
@@ -480,9 +480,10 @@ export default function SearchComponent({setList, influencerList, setValid, vali
         setTopic('')
 
         if(newTopic != ''){
-            var currentTopics = topicList
-            currentTopics.push(newTopic)
-            setTopicList(currentTopics)
+            setTopicList([
+                ...topicList,
+                newTopic
+            ])
         }
     }
 
@@ -491,16 +492,15 @@ export default function SearchComponent({setList, influencerList, setValid, vali
         setNiche('')
 
         if(newNiche != ''){
-            var currentNiches = nicheList
-            currentNiches.push(newNiche)
-            setNicheList(currentNiches)
+            setNicheList([
+                ...nicheList,
+                newNiche
+            ])
         }
     }
 
     function clearTag(){
-        var currentTags = tags
-        currentTags = []
-        setTags(currentTags)
+        setTags([])
     }
 
     function clearTopic(){
