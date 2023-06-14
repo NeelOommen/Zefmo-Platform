@@ -90,9 +90,16 @@ export default function Home() {
     }
   }
 
+  function doLogOut(){
+    auth.signOut()
+    setLoggedIn(false)
+    localStorage.removeItem('loggedInUserData')
+    setLoginButton('Login')
+  }
+
   function checkLocalLogin(){
     const userDataLocal = localStorage.getItem('loggedInUserData')
-    if(userData !== null){
+    if(userDataLocal !== null){
       const userDataTemp = JSON.parse(userDataLocal)
       const btnString = 'Logged in as ' + userDataTemp.displayName
       setLoginButton(btnString)
@@ -156,10 +163,11 @@ export default function Home() {
           <div className='h-96 overflow-y-auto'>
             {
               presetList.map((preset) => (
-                <PresetComponent key={preset.id} data={preset} presetToLoad={presetToLoad} setPresetToLoad={setPresetToLoad} presetFlag={loadPreset} setPresetFlag={setLoadPreset} presetToDelete={presetToDelete} setPresetToDelete={setPresetToDelete} deletePreset={deletePreset} setDeletePreset={setDeletePreset}/>
+                <PresetComponent key={preset.id} loggedIn={loggedIn} data={preset} presetToLoad={presetToLoad} setPresetToLoad={setPresetToLoad} presetFlag={loadPreset} setPresetFlag={setLoadPreset} presetToDelete={presetToDelete} setPresetToDelete={setPresetToDelete} deletePreset={deletePreset} setDeletePreset={setDeletePreset}/>
               ))
             }
           </div>
+        <div className={`absolute bottom-20 text-center py-2 font-bold text-zYellow-500 w-full bg-red-50 ${loggedIn?'block':'hidden'}`} onClick={doLogOut}>Log Out</div>
         <div className='absolute bottom-0 text-center py-2 font-bold text-zYellow-500 w-full bg-red-50' onClick={doLogin}>{loginButton}</div>
       </div>
 
