@@ -20,7 +20,7 @@ export default function ArrayElements({ items }){
 
     return(
         <div className="max-w-full overflow-x-hidden h-auto">
-            {false?'No Items Found' : (
+            {emptyItems?'No Items Found' : (
                 <div className="flex flex-wrap">
                     {
                         items.map((item) => (
