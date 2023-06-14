@@ -9,7 +9,7 @@ import SearchComponent from '@/components/SearchComponent/page'
 import ResultSummary from '@/components/ResultSummary/page'
 import { useEffect, useState } from 'react'
 import { initializeApp } from 'firebase/app'
-import { getAuth, signInWithPopup, GoogleAuthProvider} from 'firebase/auth'
+import { getAuth, signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 import { doc, collection, getDocs, setDoc, deleteDoc } from 'firebase/firestore'
 import PresetNameModal from '@/components/PresetNameModal/page';
@@ -47,7 +47,12 @@ export default function Home() {
 
   const app = initializeApp(firebaseConfig)
   const db = getFirestore(app)
-  const auth = getAuth()
+  const auth = getAuth(app)
+  const persistenceMethod = async () => {
+    await setPersistence(auth, browserLocalPersistence)
+  }
+
+  //persistenceMethod()
   const gProvider = new GoogleAuthProvider()
 
   function menuCollapse(){
@@ -55,20 +60,46 @@ export default function Home() {
   }
 
   function doLogin(){
-    signInWithPopup(auth, gProvider)
-    .then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result)
-      const token = credential.accessToken
-      const user = result.user
-      setUserData(user)
-      const btnString = 'Logged in as ' + user.displayName
+    const userDataLocal = localStorage.getItem('loggedInUserData')
+    if(userDataLocal === null){
+      signInWithPopup(auth, gProvider)
+        .then((result) => {
+          const credential = GoogleAuthProvider.credentialFromResult(result)
+          const token = credential.accessToken
+          const user = result.user
+          setUserData(user)
+          const btnString = 'Logged in as ' + user.displayName
+          setLoginButton(btnString)
+          setLoggedIn(true)
+          localStorage.setItem('loggedInUserData', JSON.stringify(user))
+        })
+        .catch((error) => {
+          console.log(error)
+          setLoggedIn(false)
+          localStorage.removeItem('loggedInUserData')
+        })
+    }
+    else{
+      const userDataTemp = JSON.parse(userDataLocal)
+      const btnString = 'Logged in as ' + userDataTemp.displayName
       setLoginButton(btnString)
+      setUserData(userDataTemp)
       setLoggedIn(true)
-    })
-    .catch((error) => {
-      console.log(error)
-      setLoggedIn(false)
-    })
+      localStorage.setItem('loggedInUserData', userDataLocal)
+      //console.log(userDataTemp)
+    }
+  }
+
+  function checkLocalLogin(){
+    const userDataLocal = localStorage.getItem('loggedInUserData')
+    if(userData !== null){
+      const userDataTemp = JSON.parse(userDataLocal)
+      const btnString = 'Logged in as ' + userDataTemp.displayName
+      setLoginButton(btnString)
+      setUserData(userDataTemp)
+      setLoggedIn(true)
+      localStorage.setItem('loggedInUserData', userDataLocal)
+    }
   }
 
   async function storePreset(){
@@ -100,8 +131,12 @@ export default function Home() {
     }
   }, [deletePreset])
 
+  useEffect(() => {
+    checkLocalLogin()
+  }, [])
+
   return (
-    <main className='min-h-screen md:max-h-screen bg-zYellow-500 min-w-screen max-w-screen flex flex-col items-center'> 
+    <main className={`min-h-screen md:max-h-screen bg-zYellow-500 min-w-screen max-w-screen flex flex-col items-center ${menuCollapsed?'overflow-y-clip':'overflow-y-clip'}`}> 
 
       <div className='flex w-full flex-row items-center'>
         {/* toprow */}
