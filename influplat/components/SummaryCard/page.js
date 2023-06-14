@@ -9,9 +9,11 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
     const [youtubeData, setYoutubeData] = useState('')
     const [youtubeAdvanced, setYoutubeAdvanced] = useState('')
     const [youtubeHistory, setYoutubeHistory] = useState('')
+    const [loading, setLoading] = useState(true)
 
 
     function getData(){
+        setLoading(true)
         if(platform === 'Instagram'){
             fetch(`https://dev.creatordb.app/v2/instagramBasic?instagramId=${influencerName}`, {
                 headers: {
@@ -47,6 +49,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
             })  
 
         }
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -77,66 +80,76 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
     }
 
     return(
-        <a href='/InstagramCreator' onClick={storeData} target='_blank'>
-            <div 
-            className="max-w-full md:w-80 my-4 mx-1 md:mx-2 h-auto bg-zGreen-500 shadow-harsh10px p-4 border-black border-2 flex flex-col items-center text-black"
-            >
-                <Image 
-                    src={platform === 'Instagram' ? influencerData.avatar:defaultPFP}
-                    width={150}
-                    height={150}
-                    alt={influencerName + "'s Avatar"}
-                    className={`rounded-full border-black border-2`}
-                />
-                <div className={`text-white my-1 font-sans font-bold text-2xl px-4 ${platform==='Instagram'?'block':'hidden'}`}>
-                    {platform==='Instagram'?influencerData.instagramName:''}
+        <div>
+            {loading?(
+                <div className="bg-zGreen-500 w-32 h-32">
+                    Loading Data for influencer
                 </div>
-                <div className={`text-white my-1 font-sans font-bold text-2xl px-4 ${platform==='Youtube'?'block':'hidden'}`}>
-                    {platform==='Youtube'?youtubeData.youtubeName:''}
-                </div>
-                <div className={`my-2 flex flex-row items-center ${(platform === 'Instagram')?'block':'hidden'}`}>
-                    <Image 
-                        src={'https://img.icons8.com/ios/50/instagram-new--v1.png'}
-                        width={20}
-                        height={20}
-                        alt={'Instagram logo'}
-                    />
-                    &nbsp; <a href={`https://www.instagram.com/${influencerData.instagramId}/`} target='_blank' className="text-white">@{platform==='Instagram'?influencerData.instagramId:''}</a>
-                </div>
-                <div className={`my-2 flex flex-row items-center ${platform==='Youtube'?'block':'hidden'}`}>
-                    <Image 
-                        src={'https://img.icons8.com/ios/50/youtube-play--v1.png'}
-                        width={20}
-                        height={20}
-                        alt={'Youtube logo'}
-                    />
-                    &nbsp; <a href={`https://www.youtube.com/${youtubeData.displayId}`} target='_blank' className="text-white hover:text-red-500 transition-all duration-300">{youtubeData.displayId}</a>
-                </div>
-                <div className={`my-2 flex flex-row items-center ${(platform === 'Youtube' && youtubeData.instagramId!='' )?'block':'hidden'}`}>
-                    <Image 
-                        src={'https://img.icons8.com/ios/50/instagram-new--v1.png'}
-                        width={20}
-                        height={20}
-                        alt={'Instagram logo'}
-                    />
-                    &nbsp; <a href={`https://www.instagram.com/${youtubeData.instagramId}/`} target="_blank" className="text-white hover:text-zPink-500 transition-all duration-300">@{youtubeData.instagramId}</a>
-                </div>  
-                <div className={`${platform==='Instagram'?'block':'hidden'}`}>
-                    Followers: {platform==='Instagram'?influencerData.followers:''}
-                </div>
-                <div className={`${(platform==='Youtube' && youtubeHistory != undefined)?'block':'hidden'}`}>
-                    Subscribers: {(platform==='Youtube' && youtubeHistory != undefined)?youtubeHistory.subscribers:''}
-                </div>
-                <div className={`${platform==='Instagram'?'block':'hidden'}`}>
-                    Engagement Rate: {platform==='Instagram'?`${(influencerData.engageRate * 100).toFixed(3)}%`:''}
-                </div>
-                <div className={`${platform==='Youtube'?'block':'hidden'}`}>
-                    Engagement Rate (Last 20 Uploads): {platform==='Youtube'?`${(youtubeData.engageRateR20 * 100).toFixed(3)}%`:''}
-                </div>
-                <div className={`${platform==='Youtube'?'block':'hidden'}`}>
-                    Engagement Rate (Last 1 Year): {platform==='Youtube'?`${(youtubeData.engageRate1Y * 100).toFixed(3)}%`:''}
-                </div>
-            </div>
-        </a>
+            )
+            :
+            (
+                <a href='/InstagramCreator' onClick={storeData} target='_blank'>
+                    <div 
+                    className="max-w-full md:w-80 my-4 mx-1 md:mx-2 h-auto bg-zGreen-500 shadow-harsh10px p-4 border-black border-2 flex flex-col items-center text-black"
+                    >
+                        <Image 
+                            src={platform === 'Instagram' ? influencerData.avatar:defaultPFP}
+                            width={150}
+                            height={150}
+                            alt={influencerName + "'s Avatar"}
+                            className={`rounded-full border-black border-2`}
+                        />
+                        <div className={`text-white my-1 font-sans font-bold text-2xl px-4 ${platform==='Instagram'?'block':'hidden'}`}>
+                            {platform==='Instagram'?influencerData.instagramName:''}
+                        </div>
+                        <div className={`text-white my-1 font-sans font-bold text-2xl px-4 ${platform==='Youtube'?'block':'hidden'}`}>
+                            {platform==='Youtube'?youtubeData.youtubeName:''}
+                        </div>
+                        <div className={`my-2 flex flex-row items-center ${(platform === 'Instagram')?'block':'hidden'}`}>
+                            <Image 
+                                src={'https://img.icons8.com/ios/50/instagram-new--v1.png'}
+                                width={20}
+                                height={20}
+                                alt={'Instagram logo'}
+                            />
+                            &nbsp; <a href={`https://www.instagram.com/${influencerData.instagramId}/`} target='_blank' className="text-white">@{platform==='Instagram'?influencerData.instagramId:''}</a>
+                        </div>
+                        <div className={`my-2 flex flex-row items-center ${platform==='Youtube'?'block':'hidden'}`}>
+                            <Image 
+                                src={'https://img.icons8.com/ios/50/youtube-play--v1.png'}
+                                width={20}
+                                height={20}
+                                alt={'Youtube logo'}
+                            />
+                            &nbsp; <a href={`https://www.youtube.com/${youtubeData.displayId}`} target='_blank' className="text-white hover:text-red-500 transition-all duration-300">{youtubeData.displayId}</a>
+                        </div>
+                        <div className={`my-2 flex flex-row items-center ${(platform === 'Youtube' && youtubeData.instagramId!='' )?'block':'hidden'}`}>
+                            <Image 
+                                src={'https://img.icons8.com/ios/50/instagram-new--v1.png'}
+                                width={20}
+                                height={20}
+                                alt={'Instagram logo'}
+                            />
+                            &nbsp; <a href={`https://www.instagram.com/${youtubeData.instagramId}/`} target="_blank" className="text-white hover:text-zPink-500 transition-all duration-300">@{youtubeData.instagramId}</a>
+                        </div>  
+                        <div className={`${platform==='Instagram'?'block':'hidden'}`}>
+                            Followers: {platform==='Instagram'?influencerData.followers:''}
+                        </div>
+                        <div className={`${(platform==='Youtube' && youtubeHistory != undefined)?'block':'hidden'}`}>
+                            Subscribers: {(platform==='Youtube' && youtubeHistory != undefined)?youtubeHistory.subscribers:''}
+                        </div>
+                        <div className={`${platform==='Instagram'?'block':'hidden'}`}>
+                            Engagement Rate: {platform==='Instagram'?`${(influencerData.engageRate * 100).toFixed(3)}%`:''}
+                        </div>
+                        <div className={`${platform==='Youtube'?'block':'hidden'}`}>
+                            Engagement Rate (Last 20 Uploads): {platform==='Youtube'?`${(youtubeData.engageRateR20 * 100).toFixed(3)}%`:''}
+                        </div>
+                        <div className={`${platform==='Youtube'?'block':'hidden'}`}>
+                            Engagement Rate (Last 1 Year): {platform==='Youtube'?`${(youtubeData.engageRate1Y * 100).toFixed(3)}%`:''}
+                        </div>
+                    </div>
+                </a>
+            )}
+        </div>
     )
 }

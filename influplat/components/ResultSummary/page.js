@@ -20,7 +20,9 @@ export default function ResultSummary({setList, influencerList, setValid, validF
             </div>
             )
             :
-            <span className={``}>Perform a Search!</span>
+            <div>
+                <span className={``}>Perform a Search!</span>
+            </div>
             }
         </div>
     )

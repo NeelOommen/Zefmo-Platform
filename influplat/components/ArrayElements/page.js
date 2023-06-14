@@ -11,18 +11,16 @@ export default function ArrayElements({ items }){
         else{
             setEmptyItems(true)
         }
-
-        console.log(emptyItems)
     }
 
     useEffect(() => {
         checkItems();
-    }, [items])
+    }, [items, emptyItems])
 
 
     return(
         <div className="max-w-full overflow-x-hidden h-auto">
-            {emptyItems?'No Tags Found' : (
+            {false?'No Items Found' : (
                 <div className="flex flex-wrap">
                     {
                         items.map((item) => (

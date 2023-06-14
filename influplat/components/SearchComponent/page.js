@@ -142,8 +142,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setMinFollowers(0)
         }
 
         //Maximum Follower Filter
@@ -155,8 +153,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setMaxFollowers(0)
         }
 
         //Location Filter
@@ -190,7 +186,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
         }
 
         //Average Like Filter
@@ -202,8 +197,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAvgLikes(0)
         }
 
         //Average Comment Filter
@@ -215,8 +208,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAvgComments(0)
         }
 
         //Hashtag Filter
@@ -228,8 +219,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setTags([])
         }
 
         return filterList;
@@ -247,8 +236,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setMaxYoutubeSubscribers(0)
         }
 
         //Minimum Subscriber filter
@@ -260,8 +247,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setMinYoutubeSubscribers(0)
         }
 
         //average Comments filter
@@ -273,8 +258,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAvgYoutubeComments(0)
         }
 
         //Average Likes filter
@@ -286,8 +269,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAvgYoutubeLikes(0)
         }
 
         //Average max views filter
@@ -299,8 +280,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAvgMaxYoutubeViews(0)
         }
 
         //Average max views filter
@@ -312,8 +291,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAvgMinYoutubeViews(0)
         }
 
         //Audience country filter
@@ -325,8 +302,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAudienceCountry('')
         }
 
         //Average audience max age filter
@@ -338,8 +313,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAudienceMaxAge(0)
         }
 
         //Average audience min age filter
@@ -351,8 +324,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAudienceMinAge(0)
         }
 
         //Audience male ratio filter
@@ -364,8 +335,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAudienceMaleRatio(0)
         }
 
         //Audience male ratio filter
@@ -377,8 +346,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setAudienceFemaleRatio(0)
         }
 
         //topic filter
@@ -392,8 +359,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setTopicList([])
         }
 
         //niche filter
@@ -405,8 +370,6 @@ export default function SearchComponent({setList, influencerList, setValid, vali
             }
 
             filterList.push(filter)
-
-            setNicheList([])
         }
 
         return filterList;
@@ -503,10 +466,12 @@ export default function SearchComponent({setList, influencerList, setValid, vali
 
         newTag = '#' + newTag
 
-        if(newTag != ''){
+
+        if(newTag !== '#'){
             var currentTags = tags
             currentTags.push(newTag)
             setTags(currentTags)
+            console.log(tags)
         }
     }
 
