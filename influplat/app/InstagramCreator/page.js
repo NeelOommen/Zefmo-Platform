@@ -1,5 +1,6 @@
 'use client';
 import ArrayElements from "@/components/ArrayElements/page";
+import SummaryCard from "@/components/SummaryCard/page";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";6
@@ -14,16 +15,28 @@ export default function InstagramCreator(){
     const [instagramAvailable, setIAvailable] = useState(false);
     const [youtubeAvailable, setYAvailable] = useState(false);
 
+    const [relatedUsers, setRelatedUsers] = useState([])
+
+    const [platform, setPlatform] = useState('')
+
     function getProps(){
+        setPlatform(localStorage.getItem('platform'))
         const iStr = localStorage.getItem('instagramSearch')
         const yStr = localStorage.getItem('youtubeSearch')
-        console.log(iStr)
-        console.log(yStr)
 
         //instagram
         if(iStr != "NOT_AVAILABLE"){
+            setInstagramData(JSON.parse(iStr))
+            const users = instagramData.relatedUsers
+            setRelatedUsers(users)
             setIAvailable(true)
-            fetch(`https://dev.creatordb.app/v2/instagramBasic?instagramId=${iStr}`, {
+        }
+        else{
+            setIAvailable(false)
+        }
+
+        if(localStorage.getItem('getInstagram') === 'true'){
+            fetch(`https://dev.creatordb.app/v2/instagramBasic?instagramId=${loca}`, {
                 headers: {
                   'Accept': 'application/json',
                   'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
@@ -32,21 +45,31 @@ export default function InstagramCreator(){
             .then(response => response.json())
             .then(data => {
                 setInstagramData(data.data.basicInstagram)
-                console.log(data.data.basicInstagram)
+                const users = instagramData.relatedUsers
+                setRelatedUsers(users)
+                setIAvailable(true)
             })
             .catch(error => {
                 console.log(error)
             })
-        }
-        else{
-            setIAvailable(false)
+            localStorage.setItem('getInstagram', 'false')
         }
         
 
         //youtube data
-        if(yStr != "NOT_AVAILABLE"){
+        if(yStr === "AVAILABLE"){
+            setYoutubeData(JSON.parse(localStorage.getItem('youtubeData')))
+            setYoutubeAdvancedData(JSON.parse(localStorage.getItem('youtubeAdvanced')))
+            setYoutubeHistoryData(JSON.parse(localStorage.getItem('youtubeHistory')))
             setYAvailable(true)
-            fetch(`https://dev.creatordb.app/v2/youtubeDetail?youtubeId=${yStr}`, {
+        }
+        else{
+            setYAvailable(false)
+        }
+
+        if(localStorage.getItem('getYoutube') === 'true'){
+            localStorage.setItem('getYoutube', 'false')
+            fetch(`https://dev.creatordb.app/v2/youtubeDetail?youtubeId=${localStorage.getItem('youtubeSearch')}`, {
                 headers: {
                     'Accept': 'application/json',
                     'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
@@ -57,8 +80,8 @@ export default function InstagramCreator(){
                 setYoutubeData(data.data.basicYoutube)
                 setYoutubeAdvancedData(data.data.detailYoutube)
                 setYoutubeHistoryData(data.data.histories[0])
-                console.log(youtubeData)
-                //console.log(youtubeAdvancedData)
+                setYAvailable(true)
+                console.log(youtubeAdvancedData)
                 //console.log(youtubeHistoricalData)
 
                 if(youtubeData.hasEmail === true){
@@ -83,14 +106,13 @@ export default function InstagramCreator(){
                 console.log(error)
             })  
         }
-        else{
-            setYAvailable(false)
-        }
     }
 
     useEffect(() => {
         getProps();
     }, []);
+
+    //getProps()
 
     return(
         <div className="bg-zYellow-500 min-w-screen max-w-screen h-auto p-2">
@@ -115,6 +137,24 @@ export default function InstagramCreator(){
                     <ArrayElements 
                         items={instagramData.hashtags}
                     />
+                    <div className="mt-2 text-xl">Related Users</div>
+                    <div className="h-auto md:h-[450px] md:overflow-x-scroll md:no-scrollbar md:flex md:flex-row">
+                            {
+                               relatedUsers!==undefined?(
+                                    relatedUsers.map((user) => (
+                                        <SummaryCard key={user} influencerName={user} platform={platform} setPlatform={setPlatform}/>
+                                    ))
+                               )
+                               :
+                               (
+                                <div>
+                                    No Related Users found
+                                </div>
+                                )
+                                // console.log(relatedUsers)
+                                // <SummaryCard key={relatedUsers[0]} influencerName={relatedUsers[0]} platform={platform} setPlatform={setPlatform}/>
+                            }
+                    </div>
                 </div>
 
                 <div className={`bg-zYellow-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${youtubeAvailable?'block':'hidden'}`}>

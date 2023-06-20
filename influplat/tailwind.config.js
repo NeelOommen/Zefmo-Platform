@@ -15,8 +15,12 @@ module.exports = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'desktopBg': "url('public/bg1.svg)"
       },
       colors: {
+        zBlueGreen: {
+          500: '#389488',
+        },
         zYellow: {
           100: '#fae3b4',
           500: '#f2b944'
@@ -33,7 +37,9 @@ module.exports = {
           500: '#3d277b'
         },
         zGreen: {
-          500: "#93c255"
+          100: '#dfedcc',
+          500: '#93c255',
+          900: '#2c3a19'
         },
         softBlack: {
           500: '#111111'

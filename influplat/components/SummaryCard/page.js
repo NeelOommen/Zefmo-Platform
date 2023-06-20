@@ -1,7 +1,6 @@
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import defaultPFP from 'public/defaultPFP.png'
-import { useRouter } from "next/router"
 
 export default function SummaryCard({ influencerName, platform, setPlatform }){
 
@@ -28,6 +27,9 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
             .catch(error => {
                 console.log(error)
             })
+            .finally(() => {
+                setLoading(false)
+            })
         }
 
         if(platform === 'Youtube'){
@@ -46,10 +48,11 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
             })
             .catch(error => {
                 console.log(error)
-            })  
-
+            })
+            .finally(() => {
+                setLoading(false)
+            })
         }
-        setLoading(false)
     }
 
     useEffect(() => {
@@ -58,39 +61,58 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
     
 
     function storeData(){
+        localStorage.setItem('platform', platform)
         if(platform === 'Instagram'){
-            localStorage.setItem('instagramSearch', influencerName)
+            // localStorage.setItem('instagramSearch', influencerName)
+            localStorage.setItem('instagramSearch', JSON.stringify(influencerData))
+            localStorage.setItem('getInstagram', 'false')
+            
             if(influencerData.youtubeId!=''){
+                localStorage.setItem('getYoutube', 'true')
                 localStorage.setItem('youtubeSearch',influencerData.youtubeId)
             }
             else{
+                localStorage.setItem('getYoutube', 'false')
                 localStorage.setItem('youtubeSearch','NOT_AVAILABLE')
             }
         }
         else if(platform === 'Youtube'){
-            localStorage.setItem('youtubeSearch', influencerName)
+            // localStorage.setItem('youtubeSearch', influencerName)
+            localStorage.setItem('youtubeSearch', 'AVAILABLE')
+            localStorage.setItem('getYoutube', 'false')
+            localStorage.setItem('youtubeData', JSON.stringify(youtubeData))
+            localStorage.setItem('youtubeAdvanced', JSON.stringify(youtubeAdvanced))
+            localStorage.setItem('youtubeHistory', JSON.stringify(youtubeHistory))
+
             if(youtubeData.instagramId != ''){
+                localStorage.setItem('getInstagram', 'true')
+                localStorage.setItem('youtubeSearch', 'NOT_AVAILABLE')
                 localStorage.setItem('instagramSearch', youtubeData.instagramId)
             }
             else{
+                localStorage.setItem('getInstagram', 'false')
+                localStorage.setItem('youtubeSearch', 'NOT_AVAILABLE')
                 localStorage.setItem('instagramSearch', 'NOT_AVAILABLE')
             }
-            
+        }
+        else{
+            localStorage.setItem('instagramSearch', 'NOT_AVAILABLE')
+            localStorage.setItem('youtubeSearch', 'NOT_AVAILABLE')
         }
     }
 
     return(
         <div>
             {loading?(
-                <div className="bg-zGreen-500 w-32 h-32">
-                    Loading Data for influencer
+                <div className="flex flex-col items-center justify-center max-w-full md:w-80 my-4 mx-1 md:mx-2 h-auto bg-zGreen-500 shadow-harsh10px p-4 border-black border-2 text-white">
+                    <div className='w-[40px] h-[40px] border-[4px] border-zGreen-900 border-t-[4px] border-t-zGreen-100 rounded-full animate-spin'></div>
                 </div>
             )
             :
             (
                 <a href='/InstagramCreator' onClick={storeData} target='_blank'>
                     <div 
-                    className="max-w-full md:w-80 my-4 mx-1 md:mx-2 h-auto bg-zGreen-500 shadow-harsh10px p-4 border-black border-2 flex flex-col items-center text-black"
+                    className="group max-w-full md:w-80 my-4 mx-1 md:mx-2 h-auto bg-zGreen-500 text-zGreen-900 border-2 border-zGreen-900 hover:bg-zGreen-900 hover:text-zGreen-500 hover:border-zGreen-500 shadow-harsh10px p-4 flex flex-col items-center hover:rounded-2xl transition-all duration-300"
                     >
                         <Image 
                             src={platform === 'Instagram' ? influencerData.avatar:defaultPFP}
@@ -99,10 +121,10 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                             alt={influencerName + "'s Avatar"}
                             className={`rounded-full border-black border-2`}
                         />
-                        <div className={`text-white my-1 font-sans font-bold text-2xl px-4 ${platform==='Instagram'?'block':'hidden'}`}>
+                        <div className={`text-zGreen-900 group-hover:text-zGreen-500 my-1 font-sans font-bold text-2xl px-4 ${platform==='Instagram'?'block':'hidden'}`}>
                             {platform==='Instagram'?influencerData.instagramName:''}
                         </div>
-                        <div className={`text-white my-1 font-sans font-bold text-2xl px-4 ${platform==='Youtube'?'block':'hidden'}`}>
+                        <div className={`text-zGreen-900 group-hover:text-zGreen-500 my-1 font-sans font-bold text-2xl px-4 ${platform==='Youtube'?'block':'hidden'}`}>
                             {platform==='Youtube'?youtubeData.youtubeName:''}
                         </div>
                         <div className={`my-2 flex flex-row items-center ${(platform === 'Instagram')?'block':'hidden'}`}>
@@ -112,7 +134,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                                 height={20}
                                 alt={'Instagram logo'}
                             />
-                            &nbsp; <a href={`https://www.instagram.com/${influencerData.instagramId}/`} target='_blank' className="text-white">@{platform==='Instagram'?influencerData.instagramId:''}</a>
+                            &nbsp; <a href={`https://www.instagram.com/${influencerData.instagramId}/`} target='_blank' className="text-zGreen-900 group-hover:text-zGreen-500 transition-all duration-300">@{platform==='Instagram'?influencerData.instagramId:''}</a>
                         </div>
                         <div className={`my-2 flex flex-row items-center ${platform==='Youtube'?'block':'hidden'}`}>
                             <Image 
@@ -121,7 +143,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                                 height={20}
                                 alt={'Youtube logo'}
                             />
-                            &nbsp; <a href={`https://www.youtube.com/${youtubeData.displayId}`} target='_blank' className="text-white hover:text-red-500 transition-all duration-300">{youtubeData.displayId}</a>
+                            &nbsp; <a href={`https://www.youtube.com/${youtubeData.displayId}`} target='_blank' className="text-zGreen-900 group-hover:text-zGreen-500 hover:text-red-500 transition-all duration-300">{youtubeData.displayId}</a>
                         </div>
                         <div className={`my-2 flex flex-row items-center ${(platform === 'Youtube' && youtubeData.instagramId!='' )?'block':'hidden'}`}>
                             <Image 
@@ -130,7 +152,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                                 height={20}
                                 alt={'Instagram logo'}
                             />
-                            &nbsp; <a href={`https://www.instagram.com/${youtubeData.instagramId}/`} target="_blank" className="text-white hover:text-zPink-500 transition-all duration-300">@{youtubeData.instagramId}</a>
+                            &nbsp; <a href={`https://www.instagram.com/${youtubeData.instagramId}/`} target="_blank" className="text-zGreen-900 group-hover:text-zGreen-500 hover:text-zPink-500 transition-all duration-300">@{youtubeData.instagramId}</a>
                         </div>  
                         <div className={`${platform==='Instagram'?'block':'hidden'}`}>
                             Followers: {platform==='Instagram'?influencerData.followers:''}
