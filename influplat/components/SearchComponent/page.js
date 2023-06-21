@@ -392,7 +392,7 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
             body: JSON.stringify({
               'desc': true,
               'filters': filterList,
-              'maxResults': 10,
+              'maxResults': 25,
               'offset': offset,
               'sortBy': 'followers'
             })

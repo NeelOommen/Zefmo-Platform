@@ -40,13 +40,13 @@ export default function Home() {
   const [userData, setUserData] = useState({})
 
   const firebaseConfig = {
-    apiKey: "AIzaSyB4v1tPYfRSl-YEG0Ngz1YEymNk9_snUyY",
-    authDomain: "zefmo-platform-temp.firebaseapp.com",
-    projectId: "zefmo-platform-temp",
-    storageBucket: "zefmo-platform-temp.appspot.com",
-    messagingSenderId: "265949431449",
-    appId: "1:265949431449:web:648b86d4cf25c00e5a9a08",
-    measurementId: "G-NJE2MRG7LH"
+    apiKey: "AIzaSyAg-kS6-1XRd_fptvTIiG71KXh7LOZFX6w",
+    authDomain: "zefnau-backend.firebaseapp.com",
+    projectId: "zefnau-backend",
+    storageBucket: "zefnau-backend.appspot.com",
+    messagingSenderId: "201130665262",
+    appId: "1:201130665262:web:c64c30107ae5742add06bf",
+    measurementId: "G-R2G8DVH28D"
   };
 
   const app = initializeApp(firebaseConfig)
