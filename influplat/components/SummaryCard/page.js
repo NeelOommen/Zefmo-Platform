@@ -112,19 +112,19 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
             (
                 <a href='/InstagramCreator' onClick={storeData} target='_blank'>
                     <div 
-                    className="group max-w-full md:w-80 my-4 mx-1 md:mx-2 h-auto bg-zGreen-500 text-zGreen-900 border-2 border-zGreen-900 hover:bg-zGreen-900 hover:text-zGreen-500 hover:border-zGreen-500 shadow-harsh10px p-4 flex flex-col items-center hover:rounded-2xl transition-all duration-300"
+                    className={`group max-w-full md:w-80 my-4 font-opensans mx-1 md:mx-2 h-[450px] bg-zGreen-500 text-zGreen-900 border-2 border-zGreen-900 hover:bg-zGreen-900 hover:text-zGreen-500 hover:border-zGreen-500 shadow-harsh10px p-4 flex flex-col items-center hover:rounded-2xl transition-all duration-300 ${platform === 'Youtube'?'px-8':''}`}
                     >
                         <Image 
                             src={platform === 'Instagram' ? influencerData.avatar:defaultPFP}
-                            width={150}
-                            height={150}
+                            width={platform === 'Instagram' ? 150 : 75}
+                            height={platform === 'Instagram' ? 150 : 75}
                             alt={influencerName + "'s Avatar"}
                             className={`rounded-full border-black border-2`}
                         />
-                        <div className={`my-1 font-sans font-bold text-2xl px-4 ${platform==='Instagram'?'block':'hidden'}`}>
+                        <div className={`my-1 font-poppins text-2xl px-4 text-center ${platform==='Instagram'?'block':'hidden'}`}>
                             {platform==='Instagram'?influencerData.instagramName:''}
                         </div>
-                        <div className={`my-1 font-sans font-bold text-2xl px-4 ${platform==='Youtube'?'block':'hidden'}`}>
+                        <div className={`my-1 font-poppins text-center text-2xl px-4 ${platform==='Youtube'?'block':'hidden'}`}>
                             {platform==='Youtube'?youtubeData.youtubeName:''}
                         </div>
                         <div className={`my-2 flex flex-row items-center ${(platform === 'Instagram')?'block':'hidden'}`}>
@@ -160,13 +160,13 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                         <div className={`${(platform==='Youtube' && youtubeHistory != undefined)?'block':'hidden'}`}>
                             Subscribers: {(platform==='Youtube' && youtubeHistory != undefined)?youtubeHistory.subscribers:''}
                         </div>
-                        <div className={`${platform==='Instagram'?'block':'hidden'}`}>
+                        <div className={`${platform==='Instagram'?'block':'hidden'} text-center`}>
                             Engagement Rate: {platform==='Instagram'?`${(influencerData.engageRate * 100).toFixed(3)}%`:''}
                         </div>
-                        <div className={`${platform==='Youtube'?'block':'hidden'}`}>
+                        <div className={`${platform==='Youtube'?'block':'hidden'} text-center`}>
                             Engagement Rate (Last 20 Uploads): {platform==='Youtube'?`${(youtubeData.engageRateR20 * 100).toFixed(3)}%`:''}
                         </div>
-                        <div className={`${platform==='Youtube'?'block':'hidden'}`}>
+                        <div className={`${platform==='Youtube'?'block':'hidden'} text-center`}>
                             Engagement Rate (Last 1 Year): {platform==='Youtube'?`${(youtubeData.engageRate1Y * 100).toFixed(3)}%`:''}
                         </div>
                     </div>

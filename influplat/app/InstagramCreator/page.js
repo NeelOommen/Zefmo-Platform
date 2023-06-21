@@ -141,16 +141,16 @@ export default function InstagramCreator(){
     return(
         <div>
             {loading?(
-                <div className="flex flex-col items-center justify-center w-screen h-screen md:w-80 my-4 mx-1 md:mx-2 bg-zGreen-500 shadow-harsh10px p-4 border-black border-2 text-white">
-                    <div className='w-[40px] h-[40px] border-[4px] border-zGreen-900 border-t-[4px] border-t-zGreen-100 rounded-full animate-spin'></div>
+                <div className="flex flex-col items-center justify-center min-w-screen h-screen bg-zBlueGreen-500 shadow-harsh10px border-black border-2 text-white">
+                    <div className='w-[40px] h-[40px] border-[4px] border-zBlueGreen-900 border-t-[4px] border-t-zBlueGreen-100 rounded-full animate-spin'></div>
                 </div>
             )
             :
             (
             <div className="bg-zBlueGreen-500 min-w-screen max-w-screen h-auto p-2">
-                <div className="bg-zGreen-500 border-2 border-black max-w-full h-auto mt-1 mx-2 py-2 px-2 shadow-harsh5px">
-                    <h1 className="text-5xl font-bold">{instagramData.instagramName}</h1>
-                    <div className="text-xl">@{instagramData.instagramId}</div>
+                <div className="bg-zGreen-500 border-2 border-black max-w-full h-auto mt-1 mx-2 py-2 px-2 md:px-4 md:py-4 shadow-harsh5px">
+                    <h1 className="text-5xl font-poppins">{instagramData.instagramName}</h1>
+                    <div className="text-xl font-opensans">@{instagramData.instagramId}</div>
                     <Image 
                         src={instagramData.avatar}
                         width={150}
@@ -165,18 +165,18 @@ export default function InstagramCreator(){
                             </div>
                         ):(
                         <div className={`bg-zPink-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${instagramAvailable?'block':'hidden'}`}>
-                            <div className="font-bold text-2xl mt-2">Instagram Statistics</div>
-                            <div><a href={`https://www.instagram.com/${instagramData.instagramId}/`} target="_blank" className="text-white font- hover:decoration-white hover:decoration-wavy transition-all duration-300">Head to the page</a></div>
-                            <div className="mt-2 text-xl">Followers: {instagramData.followers}</div>
-                            <div className="mt-2 text-xl">Average Likes: {instagramData.avgLikes}</div>
-                            <div className="mt-2 text-xl">Average Comments: {instagramData.avgComments}</div>
-                            <div className="mt-2 text-xl mb-2">Engagement Rate: {(instagramData.engageRate * 100).toFixed(3)}%</div>
-                            <div className="mt-2 text-md">Tags:</div>
+                            <div className="font-bold text-2xl mt-2 font-poppins">Instagram Statistics</div>
+                            <div><a href={`https://www.instagram.com/${instagramData.instagramId}/`} target="_blank" className="text-white font-opensans hover:text-pinkComplement-500 transition-all duration-300">Head to the page</a></div>
+                            <div className="mt-2 text-xl font-opensans">Followers: {instagramData.followers}</div>
+                            <div className="mt-2 text-xl font-opensans">Average Likes: {instagramData.avgLikes}</div>
+                            <div className="mt-2 text-xl font-opensans">Average Comments: {instagramData.avgComments}</div>
+                            <div className="mt-2 text-xl font-opensans mb-2">Engagement Rate: {(instagramData.engageRate * 100).toFixed(3)}%</div>
+                            <div className="mt-2 text-md font-opensans">Tags:</div>
                             <ArrayElements 
                                 items={instagramData.hashtags}
                             />
-                            <div className="mt-2 text-xl">Related Users</div>
-                            <div className="h-auto md:h-[450px] md:overflow-x-scroll md:no-scrollbar md:flex md:flex-row">
+                            {/* <div className="mt-2 text-xl">Related Users</div> */}
+                            {/* <div className="h-auto md:h-[450px] md:overflow-x-scroll md:no-scrollbar md:flex md:flex-row">
                                     {
                                        relatedUsers!==undefined?(
                                             relatedUsers.map((user) => (
@@ -192,7 +192,7 @@ export default function InstagramCreator(){
                                         // console.log(relatedUsers)
                                         // <SummaryCard key={relatedUsers[0]} influencerName={relatedUsers[0]} platform={platform} setPlatform={setPlatform}/>
                                     }
-                            </div>
+                            </div> */}
                         </div>
                         )}
                     </div>
@@ -206,20 +206,20 @@ export default function InstagramCreator(){
                         :
                         (
                         <div className={`bg-zYellow-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${youtubeAvailable?'block':'hidden'}`}>
-                            <div className="font-bold text-2xl mt-2">Youtube Statistics</div>
-                            <div><a href={`https://www.youtube.com/${youtubeData.displayId}/`} target="_blank" className="text-white font- hover:decoration-white hover:decoration-wavy transition-all duration-300">Head to the page</a></div>
-                            <div className="mt-2 text-xl">Subscribers: {youtubeHistoricalData.subscribers}</div>
-                            <div className="mt-2 text-xl">Engagement Rate (Last 20 Uploads): {(youtubeData.engageRateR20 * 100).toFixed(3)}%</div>
-                            <div className="mt-2 text-xl">Engagement Rate (Last 1 Year): {(youtubeData.engageRate1Y * 100).toFixed(3)}%</div>
-                            <div className="mt-2 text-xl">Average Likes (Last 20 Uploads): {youtubeData.avgLikesR20}</div>
-                            <div className="mt-2 text-xl">Average Likes (Last 1 Year): {youtubeData.avgLikes1Y}</div>
-                            <div className="mt-2 text-xl">Average Comments (Last 20 Uploads): {youtubeData.avgCommentsR20}</div>
-                            <div className="mt-2 text-xl">Average Comments (Last 1 Year): {youtubeData.avgComments1Y}</div>
-                            <div className="mt-2 text-xl">Average views (Last 20 Uploads): {youtubeData.avgViewsR20}</div>
-                            <div className="mt-2 text-xl">Average views (Last 1 Year): {youtubeData.avgViews1Y}</div>
-                            <div className="mt-2 text-xl">Average Audience Age: {youtubeAdvancedData.dgAvgAge === 0?((youtubeAdvancedData.dgAvgAge) + ' Years'):'Not Available'}</div>
-                            <div className="mt-2 text-xl">Emails:</div>
-                            <div>
+                            <div className="font-bold text-2xl mt-2 font-poppins">Youtube Statistics</div>
+                            <div><a href={`https://www.youtube.com/${youtubeData.displayId}/`} target="_blank" className="text-white font-opensans hover:text-yellowComplement-500 transition-all duration-300">Head to the page</a></div>
+                            <div className="mt-2 text-xl font-opensans">Subscribers: {youtubeHistoricalData.subscribers}</div>
+                            <div className="mt-2 text-xl font-opensans">Engagement Rate (Last 20 Uploads): {(youtubeData.engageRateR20 * 100).toFixed(3)}%</div>
+                            <div className="mt-2 text-xl font-opensans">Engagement Rate (Last 1 Year): {(youtubeData.engageRate1Y * 100).toFixed(3)}%</div>
+                            <div className="mt-2 text-xl font-opensans">Average Likes (Last 20 Uploads): {youtubeData.avgLikesR20}</div>
+                            <div className="mt-2 text-xl font-opensans">Average Likes (Last 1 Year): {youtubeData.avgLikes1Y}</div>
+                            <div className="mt-2 text-xl font-opensans">Average Comments (Last 20 Uploads): {youtubeData.avgCommentsR20}</div>
+                            <div className="mt-2 text-xl font-opensans">Average Comments (Last 1 Year): {youtubeData.avgComments1Y}</div>
+                            <div className="mt-2 text-xl font-opensans">Average views (Last 20 Uploads): {youtubeData.avgViewsR20}</div>
+                            <div className="mt-2 text-xl font-opensans">Average views (Last 1 Year): {youtubeData.avgViews1Y}</div>
+                            <div className="mt-2 text-xl font-opensans">Average Audience Age: {youtubeAdvancedData.dgAvgAge === 0?((youtubeAdvancedData.dgAvgAge) + ' Years'):'Not Available'}</div>
+                            {/* <div className="mt-2 text-xl font-opensans">Emails:</div> */}
+                            {/* <div>
                                 {emails.length>0?(
                                     <div className="flex flex-wrap">
                                         <ArrayElements 
@@ -227,7 +227,7 @@ export default function InstagramCreator(){
                                         />
                                     </div>
                                 ):('No Emails Found')}
-                            </div>
+                            </div> */}
                         </div>
                         )}
                     </div>

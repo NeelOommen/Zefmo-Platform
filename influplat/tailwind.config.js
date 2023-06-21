@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'opensans': ['Open Sans', 'sans-serif'],
+        'poppins': ['Poppins', 'sans-serif']
+      },
       boxShadow: {
         'harsh10px': '10px 10px 0px 0px rgba(0,0,0,1)',
         'harsh5px': '5px 5px 0px 0px rgba(0,0,0,1)',
@@ -19,7 +23,9 @@ module.exports = {
       },
       colors: {
         zBlueGreen: {
+          100: '#afd4cf',
           500: '#389488',
+          900: '#112c29'
         },
         zYellow: {
           100: '#fae3b4',
@@ -42,6 +48,12 @@ module.exports = {
           100: '#dfedcc',
           500: '#93c255',
           900: '#2c3a19'
+        },
+        pinkComplement: {
+          500: '#1be686'
+        },
+        yellowComplement: {
+          500: '#447df2'
         },
         softBlack: {
           500: '#111111'

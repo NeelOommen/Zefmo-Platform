@@ -558,12 +558,12 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
     const youtubeCountryList = ['','Afghanistan','Albania','Algeria','American Samoa','Andorra','Angola','Anguilla','Antarctica','Antigua and Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bermuda','Bhutan','Bolivia','Bosnia & Herzegovina','Bosnia and Herzegovina','Botswana','Bouvet Island','British Indian Ocean Territory','British Virgin Islands','Brazil','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Cape Verde','Caribbean Netherlands','Cayman Islands','Central African Republic','Chad','Chile','China','Christmas Island','Cocos (Keeling) Islands','Cocos Islands','Colombia','Comoros','Congo - Kinshasa','Cook Islands','Costa Rica','Croatia','Cuba','Curacao','Curaçao','Cyprus','Czech Republic','Czechia','Côte d’Ivoire','Democratic Republic of the Congo','Denmark','Djibouti','Dominica','Dominican Republic','East Timor','Ecuador','Egypt','El Salvador','Equatorial Guinea','Eritrea','Estonia','Ethiopia','Falkland Islands','Faroe Islands','Fiji','Finland','France','French Guiana','French Polynesia','French Southern Territories','Gabon','Gambia','Georgia','Germany','Ghana','Gibraltar','Greece','Greenland','Grenada','Guadeloupe','Guam','Guatemala','Guernsey','Guinea','Guinea-Bissau','Guyana','Haiti','Heard & McDonald Islands','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Isle of Man','Israel','Italy','Ivory Coast','Jamaica','Japan','Jersey','Jordan','Kazakhstan','Kenya','Kiribati','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Lesotho','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Macao','Macau','Macedonia','Madagascar','Malawi','Malaysia','Maldives','Mali','Malta','Marshall Islands','Martinique','Mauritania','Mauritius','Mayotte','Mexico','Micronesia','Moldova','Monaco','Mongolia','Montenegro','Montserrat','Morocco','Mozambique','Myanmar (Burma)','Myanmar','Namibia','Nepal','Netherlands','New Caledonia','New Zealand','Nicaragua','Niger','Nigeria','Niue','North Korea','North Macedonia','Northern Mariana Islands','Norway','Oman','Pakistan','Palau','Palestine','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Pitcairn','Poland','Portugal','Puerto Rico','Qatar','Republic of the Congo','Reunion','Romania','Russia','Rwanda','Réunion','Saint Barthelemy','Saint Helena','Saint Kitts and Nevis','Saint Lucia','Saint Martin','Saint Pierre and Miquelon','Saint Vincent and the Grenadines','Samoa','San Marino','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Georgia & South Sandwich Islands','South Korea','South Sudan','Spain','Sri Lanka','Sudan','Suriname','Svalbard and Jan Mayen','Swaziland','Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad & Tobago','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Turks and Caicos Islands','Tuvalu','Türkiye','U.S. Outlying Islands','U.S. Virgin Islands','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Vatican','Venezuela','Vietnam','Wallis & Futuna','Wallis and Futuna','Western Sahara','Yemen','Zambia','Zimbabwe','Åland Islands']
 
     return(
-        <div className={`w-full md:w-96 py-6 h-auto md:h-full md:overflow-y-scroll md:no-scrollbar ${collapsed?'bg-zBlueGreen-500':'bg-zYellow-500'} md:bg-zYellow-500 text-softBlack-500 transition-all duration-300 border-0 border-zYellow-500 md:border-2 md:border-softBlack-500 md:ml-4 md:shadow-harsh10px`}>
-            <div className={`z-20 text-softBlack-500 font-bold mt-2 mb-2 md:mb-0 ml-4 ${collapsed===true?'text-2xl':'text-4xl'} transition-all duration-300`}>Search</div>
+        <div className={`w-full font-opensans md:w-96 py-6 md:px-6 h-auto md:h-full md:overflow-y-scroll md:no-scrollbar ${collapsed?'bg-zBlueGreen-500':'bg-zYellow-500'} md:bg-zYellow-500 text-softBlack-500 transition-all duration-300 border-0 border-zYellow-500 md:border-2 md:border-softBlack-500 md:ml-4 md:shadow-harsh10px`}>
+            <div className={`z-20 text-softBlack-500 font-poppins mt-2 mb-2 md:mb-0 ml-4 ${collapsed===true?'text-2xl':'text-4xl'} transition-all duration-300`}>Search</div>
 
             <div className={`mx-4${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>
                 {/* collapsible */}
-                <div className={`px-4 py-6 md:py-2 text-softBlack-500 font-bold ${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>Platform</div>
+                <div className={`px-4 py-6 font-bold md:py-2 text-softBlack-500 ${collapsed === true? 'hidden opacity-0':'block opacity-100'}`}>Platform</div>
                 <select 
                     className={`mx-4 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-softBlack-500 border-2 hover:bg-zPink-500 transition-all duration-300 ${collapsed === true? 'hidden':'block'}`}
                     onChange={(e)=>platformChange(e.target.value)}
@@ -692,7 +692,7 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
                         value={maxSubscribers}
                     />
                     <div className={`px-4 mt-4 md:mt-2 text-sm text-softBlack-500 font-bold`}>Topics</div>
-                    <div className="flex flex-wrap">
+                    <div className="flex flex-col">
                         <select 
                             className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-softBlack-500 border-2 transition-all duration-300`}
                             onChange={(e)=>setTopic(e.target.value)}
@@ -704,8 +704,10 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
                                 ))
                             }
                         </select>
-                        <div className="border-2 border-softBlack-500 mx-4 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={addTopic}>+</div>
-                        <div className="border-2 border-softBlack-500 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={clearTopic}>Clear</div>
+                        <div className='flex flex-wrap'>
+                            <div className="border-2 border-softBlack-500 mx-4 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={addTopic}>+</div>
+                            <div className="border-2 border-softBlack-500 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={clearTopic}>Clear</div>
+                        </div>
                     </div>
                     <div className="flex flex-wrap mx-4">
                         <ArrayElements 
@@ -713,7 +715,7 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
                         />
                     </div>
                     <div className={`px-4 mt-4 md:mt-2 text-sm text-softBlack-500 font-bold`}>Niches</div>
-                    <div className="flex flex-wrap">
+                    <div className="flex flex-col">
                         <select 
                             className={`mx-4 w-72 px-4 py-2 shadow-harsh5px hover:shadow-harsh10px border-softBlack-500 border-2 transition-all duration-300`}
                             onChange={(e)=>setNiche(e.target.value)}
@@ -725,8 +727,10 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
                                 ))
                             }
                         </select>
-                        <div className="border-2 border-softBlack-500 mx-4 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={addNiche}>+</div>
-                        <div className="border-2 border-softBlack-500 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={clearNiche}>Clear</div>
+                        <div className='flex flex-wrap'>
+                            <div className="border-2 border-softBlack-500 mx-4 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={addNiche}>+</div>
+                            <div className="border-2 border-softBlack-500 px-2 py-2 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={clearNiche}>Clear</div>
+                        </div>
                     </div>
                     <div className="flex flex-wrap mx-4">
                         <ArrayElements 
@@ -813,8 +817,8 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
                         value={audienceMaxAge}
                     />
                 </div>
-                <div className={`bg-zGreen-500 border-2 shadow-harsh5px hover:shadow-harsh10px border-softBlack-500 mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl active:scale-90 active:shadow-harsh5px hover:rounded-2xl ${collapsed?'hidden':'block'}`} onClick={createPreset}>Add Preset</div>
-                <div className={`bg-zGreen-500 border-2 shadow-harsh5px hover:shadow-harsh10px border-softBlack-500 mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl active:scale-90 active:shadow-harsh5px hover:rounded-2xl ${collapsed?'hidden':'block'}`} onClick={searchHandler}>Search</div>
+                <div className={`bg-zGreen-500 border-2 shadow-harsh5px hover:shadow-harsh10px font-poppins border-softBlack-500 mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl active:scale-90 active:shadow-harsh5px hover:rounded-2xl ${collapsed?'hidden':'block'}`} onClick={createPreset}>Add Preset</div>
+                <div className={`bg-zGreen-500 border-2 shadow-harsh5px hover:shadow-harsh10px font-poppins border-softBlack-500 mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl active:scale-90 active:shadow-harsh5px hover:rounded-2xl ${collapsed?'hidden':'block'}`} onClick={searchHandler}>Search</div>
             </div>
             <div className={`text-softBlack-500 font-bold my-4 mx-4 shadow-harsh5px hover:shadow-harsh10px border-softBlack-500 border-2 min-w-screen right-4 flex flex-col items-center bg-zPink-500 hover:bg-zGreen-500 transition-all duration-300 active:scale-90 active:shadow-harsh5px hover:rounded-2xl md:hidden`} onClick={collapseHandler}>{buttonText}</div>       
         </div>
