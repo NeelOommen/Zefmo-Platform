@@ -121,10 +121,10 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                             alt={influencerName + "'s Avatar"}
                             className={`rounded-full border-black border-2`}
                         />
-                        <div className={`text-zGreen-900 group-hover:text-zGreen-500 my-1 font-sans font-bold text-2xl px-4 ${platform==='Instagram'?'block':'hidden'}`}>
+                        <div className={`my-1 font-sans font-bold text-2xl px-4 ${platform==='Instagram'?'block':'hidden'}`}>
                             {platform==='Instagram'?influencerData.instagramName:''}
                         </div>
-                        <div className={`text-zGreen-900 group-hover:text-zGreen-500 my-1 font-sans font-bold text-2xl px-4 ${platform==='Youtube'?'block':'hidden'}`}>
+                        <div className={`my-1 font-sans font-bold text-2xl px-4 ${platform==='Youtube'?'block':'hidden'}`}>
                             {platform==='Youtube'?youtubeData.youtubeName:''}
                         </div>
                         <div className={`my-2 flex flex-row items-center ${(platform === 'Instagram')?'block':'hidden'}`}>
@@ -134,7 +134,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                                 height={20}
                                 alt={'Instagram logo'}
                             />
-                            &nbsp; <a href={`https://www.instagram.com/${influencerData.instagramId}/`} target='_blank' className="text-zGreen-900 group-hover:text-zGreen-500 transition-all duration-300">@{platform==='Instagram'?influencerData.instagramId:''}</a>
+                            &nbsp; <a href={`https://www.instagram.com/${influencerData.instagramId}/`} target='_blank' className="transition-all duration-300">@{platform==='Instagram'?influencerData.instagramId:''}</a>
                         </div>
                         <div className={`my-2 flex flex-row items-center ${platform==='Youtube'?'block':'hidden'}`}>
                             <Image 
@@ -143,7 +143,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                                 height={20}
                                 alt={'Youtube logo'}
                             />
-                            &nbsp; <a href={`https://www.youtube.com/${youtubeData.displayId}`} target='_blank' className="text-zGreen-900 group-hover:text-zGreen-500 hover:text-red-500 transition-all duration-300">{youtubeData.displayId}</a>
+                            &nbsp; <a href={`https://www.youtube.com/${youtubeData.displayId}`} target='_blank' className="hover:text-red-500 transition-all duration-300">{youtubeData.displayId}</a>
                         </div>
                         <div className={`my-2 flex flex-row items-center ${(platform === 'Youtube' && youtubeData.instagramId!='' )?'block':'hidden'}`}>
                             <Image 
@@ -152,7 +152,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                                 height={20}
                                 alt={'Instagram logo'}
                             />
-                            &nbsp; <a href={`https://www.instagram.com/${youtubeData.instagramId}/`} target="_blank" className="text-zGreen-900 group-hover:text-zGreen-500 hover:text-zPink-500 transition-all duration-300">@{youtubeData.instagramId}</a>
+                            &nbsp; <a href={`https://www.instagram.com/${youtubeData.instagramId}/`} target="_blank" className="hover:text-zPink-500 transition-all duration-300">@{youtubeData.instagramId}</a>
                         </div>  
                         <div className={`${platform==='Instagram'?'block':'hidden'}`}>
                             Followers: {platform==='Instagram'?influencerData.followers:''}
