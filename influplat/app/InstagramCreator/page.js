@@ -1,6 +1,7 @@
 'use client';
 import ArrayElements from "@/components/ArrayElements/page";
 import SummaryCard from "@/components/SummaryCard/page";
+import { Elsie_Swash_Caps } from "next/font/google";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";6
@@ -14,174 +15,225 @@ export default function InstagramCreator(){
 
     const [instagramAvailable, setIAvailable] = useState(false);
     const [youtubeAvailable, setYAvailable] = useState(false);
+    const [yLoad, setYLoad] = useState(false)
+    const [iLoad, setILoad] = useState(false)
 
     const [relatedUsers, setRelatedUsers] = useState([])
 
     const [platform, setPlatform] = useState('')
 
+    const [loading, setLoading] = useState(true)
+
     function getProps(){
-        setPlatform(localStorage.getItem('platform'))
+        const tempPlatform = localStorage.getItem('platform')
+        setPlatform(tempPlatform)
         const iStr = localStorage.getItem('instagramSearch')
         const yStr = localStorage.getItem('youtubeSearch')
 
-        //instagram
-        if(iStr != "NOT_AVAILABLE"){
-            setInstagramData(JSON.parse(iStr))
+        if(platform === 'Instagram'){
+            setILoad(true)
+            const idata = JSON.parse(iStr)
+            setInstagramData(idata)
             const users = instagramData.relatedUsers
+            console.log(users)
             setRelatedUsers(users)
             setIAvailable(true)
-        }
-        else{
-            setIAvailable(false)
-        }
+            setILoad(false)
 
-        if(localStorage.getItem('getInstagram') === 'true'){
-            fetch(`https://dev.creatordb.app/v2/instagramBasic?instagramId=${loca}`, {
-                headers: {
-                  'Accept': 'application/json',
-                  'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                setInstagramData(data.data.basicInstagram)
-                const users = instagramData.relatedUsers
-                setRelatedUsers(users)
-                setIAvailable(true)
-            })
-            .catch(error => {
-                console.log(error)
-            })
-            localStorage.setItem('getInstagram', 'false')
+            //get youtube if available
+            if(localStorage.getItem('getYoutube') === 'true'){
+                setYLoad(true)
+                localStorage.setItem('getYoutube', 'false')
+                fetch(`https://dev.creatordb.app/v2/youtubeDetail?youtubeId=${localStorage.getItem('youtubeSearch')}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    setYoutubeData(data.data.basicYoutube)
+                    setYoutubeAdvancedData(data.data.detailYoutube)
+                    setYoutubeHistoryData(data.data.histories[0])
+                    setYAvailable(true)
+                    setYLoad(false)
+                    //console.log(youtubeAdvancedData)
+                    //console.log(youtubeHistoricalData)
+    
+                    if(youtubeData.hasEmail === true){
+                        fetch(`https://dev.creatordb.app/v2/youtubeEmail?youtubeId=${youtubeData.youtubeId}`, {
+                            headers: {
+                                'Accept': 'application/json',
+                                'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data.data)
+                            setEmails(data.data)
+                            setLoading(false)
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            setLoading(false)
+                        })
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    setLoading(false)
+                })  
+            }
+            else{
+                setLoading(false)
+            }
         }
         
-
-        //youtube data
-        if(yStr === "AVAILABLE"){
+        if(platform === 'Youtube'){
+            setYLoad(true)
             setYoutubeData(JSON.parse(localStorage.getItem('youtubeData')))
             setYoutubeAdvancedData(JSON.parse(localStorage.getItem('youtubeAdvanced')))
             setYoutubeHistoryData(JSON.parse(localStorage.getItem('youtubeHistory')))
             setYAvailable(true)
-        }
-        else{
-            setYAvailable(false)
-        }
+            setYLoad(false)
 
-        if(localStorage.getItem('getYoutube') === 'true'){
-            localStorage.setItem('getYoutube', 'false')
-            fetch(`https://dev.creatordb.app/v2/youtubeDetail?youtubeId=${localStorage.getItem('youtubeSearch')}`, {
-                headers: {
-                    'Accept': 'application/json',
-                    'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                setYoutubeData(data.data.basicYoutube)
-                setYoutubeAdvancedData(data.data.detailYoutube)
-                setYoutubeHistoryData(data.data.histories[0])
-                setYAvailable(true)
-                console.log(youtubeAdvancedData)
-                //console.log(youtubeHistoricalData)
-
-                if(youtubeData.hasEmail === true){
-                    fetch(`https://dev.creatordb.app/v2/youtubeEmail?youtubeId=${youtubeData.youtubeId}`, {
-                        headers: {
-                            'Accept': 'application/json',
-                            'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data.data)
-                        setEmails(data.data)
-                        
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error)
-            })  
+            //get instagram data if available
+            if(localStorage.getItem('getInstagram') === 'true'){
+                setILoad(true)
+                console.log(iStr)
+                localStorage.setItem('getInstagram', 'false')
+                fetch(`https://dev.creatordb.app/v2/instagramBasic?instagramId=${iStr}`, {
+                    headers: {
+                      'Accept': 'application/json',
+                      'apiId': process.env.NEXT_PUBLIC_CREATOR_DB_KEY
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    setInstagramData(data.data.basicInstagram)
+                    const users = instagramData.relatedUsers
+                    setRelatedUsers(users)
+                    setIAvailable(true)
+                    setILoad(false)
+                    setLoading(false)
+                })
+                .catch(error => {
+                    console.log(error)
+                    setILoad(false)
+                })
+            }
+            else{
+                setILoad(false)
+                setLoading(false)
+            }
         }
     }
 
     useEffect(() => {
         getProps();
-    }, []);
-
-    //getProps()
+        if(platform !== 'Instagram' || platform !== 'Youtube'){
+            setTimeout(function() {
+                getProps()
+            }, 1000)
+        }
+    }, [platform]);
 
     return(
-        <div className="bg-zYellow-500 min-w-screen max-w-screen h-auto p-2">
-            <div className="bg-zGreen-500 border-2 border-black max-w-full h-auto mt-1 mx-2 py-2 px-2 shadow-harsh5px">
-                <h1 className="text-5xl font-bold">{instagramData.instagramName}</h1>
-                <div className="text-xl">@{instagramData.instagramId}</div>
-                <Image 
-                    src={instagramData.avatar}
-                    width={150}
-                    height={150}
-                    alt={`${instagramData.instagramName}'s Picture`}
-                    className="mt-2 rounded-full border-2 border-black shadow-harsh5px"
-                />
-                <div className={`bg-zPink-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${instagramAvailable?'block':'hidden'}`}>
-                    <div className="font-bold text-2xl mt-2">Instagram Statistics</div>
-                    <div><a href={`https://www.instagram.com/${instagramData.instagramId}/`} target="_blank" className="text-white font- hover:decoration-white hover:decoration-wavy transition-all duration-300">Head to the page</a></div>
-                    <div className="mt-2 text-xl">Followers: {instagramData.followers}</div>
-                    <div className="mt-2 text-xl">Average Likes: {instagramData.avgLikes}</div>
-                    <div className="mt-2 text-xl">Average Comments: {instagramData.avgComments}</div>
-                    <div className="mt-2 text-xl mb-2">Engagement Rate: {(instagramData.engageRate * 100).toFixed(3)}%</div>
-                    <div className="mt-2 text-md">Tags:</div>
-                    <ArrayElements 
-                        items={instagramData.hashtags}
-                    />
-                    <div className="mt-2 text-xl">Related Users</div>
-                    <div className="h-auto md:h-[450px] md:overflow-x-scroll md:no-scrollbar md:flex md:flex-row">
-                            {
-                               relatedUsers!==undefined?(
-                                    relatedUsers.map((user) => (
-                                        <SummaryCard key={user} influencerName={user} platform={platform} setPlatform={setPlatform}/>
-                                    ))
-                               )
-                               :
-                               (
-                                <div>
-                                    No Related Users found
-                                </div>
-                                )
-                                // console.log(relatedUsers)
-                                // <SummaryCard key={relatedUsers[0]} influencerName={relatedUsers[0]} platform={platform} setPlatform={setPlatform}/>
-                            }
-                    </div>
+        <div>
+            {loading?(
+                <div className="flex flex-col items-center justify-center w-screen h-screen md:w-80 my-4 mx-1 md:mx-2 bg-zGreen-500 shadow-harsh10px p-4 border-black border-2 text-white">
+                    <div className='w-[40px] h-[40px] border-[4px] border-zGreen-900 border-t-[4px] border-t-zGreen-100 rounded-full animate-spin'></div>
                 </div>
-
-                <div className={`bg-zYellow-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${youtubeAvailable?'block':'hidden'}`}>
-                    <div className="font-bold text-2xl mt-2">Youtube Statistics</div>
-                    <div><a href={`https://www.youtube.com/${youtubeData.displayId}/`} target="_blank" className="text-white font- hover:decoration-white hover:decoration-wavy transition-all duration-300">Head to the page</a></div>
-                    <div className="mt-2 text-xl">Subscribers: {youtubeHistoricalData.subscribers}</div>
-                    <div className="mt-2 text-xl">Engagement Rate (Last 20 Uploads): {(youtubeData.engageRateR20 * 100).toFixed(3)}%</div>
-                    <div className="mt-2 text-xl">Engagement Rate (Last 1 Year): {(youtubeData.engageRate1Y * 100).toFixed(3)}%</div>
-                    <div className="mt-2 text-xl">Average Likes (Last 20 Uploads): {youtubeData.avgLikesR20}</div>
-                    <div className="mt-2 text-xl">Average Likes (Last 1 Year): {youtubeData.avgLikes1Y}</div>
-                    <div className="mt-2 text-xl">Average Comments (Last 20 Uploads): {youtubeData.avgCommentsR20}</div>
-                    <div className="mt-2 text-xl">Average Comments (Last 1 Year): {youtubeData.avgComments1Y}</div>
-                    <div className="mt-2 text-xl">Average views (Last 20 Uploads): {youtubeData.avgViewsR20}</div>
-                    <div className="mt-2 text-xl">Average views (Last 1 Year): {youtubeData.avgViews1Y}</div>
-                    <div className="mt-2 text-xl">Average Audience Age: {youtubeAdvancedData.dgAvgAge === 0?((youtubeAdvancedData.dgAvgAge) + ' Years'):'Not Available'}</div>
-                    <div className="mt-2 text-xl">Emails:</div>
+            )
+            :
+            (
+            <div className="bg-zBlueGreen-500 min-w-screen max-w-screen h-auto p-2">
+                <div className="bg-zGreen-500 border-2 border-black max-w-full h-auto mt-1 mx-2 py-2 px-2 shadow-harsh5px">
+                    <h1 className="text-5xl font-bold">{instagramData.instagramName}</h1>
+                    <div className="text-xl">@{instagramData.instagramId}</div>
+                    <Image 
+                        src={instagramData.avatar}
+                        width={150}
+                        height={150}
+                        alt={`${instagramData.instagramName}'s Picture`}
+                        className="mt-2 rounded-full border-2 border-black shadow-harsh5px"
+                    />
                     <div>
-                        {emails.length>0?(
-                            <div className="flex flex-wrap">
-                                <ArrayElements 
-                                    items={emails}
-                                />
+                        {iLoad?(
+                            <div className="flex flex-col items-center justify-center max-w-full md:w-80 my-4 mx-1 md:mx-2 h-auto bg-zPink-500 shadow-harsh10px p-4 border-black border-2 text-white">
+                                <div className='w-[40px] h-[40px] border-[4px] border-zPink-900 border-t-[4px] border-t-zPink-100 rounded-full animate-spin'></div>
                             </div>
-                        ):('No Emails Found')}
+                        ):(
+                        <div className={`bg-zPink-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${instagramAvailable?'block':'hidden'}`}>
+                            <div className="font-bold text-2xl mt-2">Instagram Statistics</div>
+                            <div><a href={`https://www.instagram.com/${instagramData.instagramId}/`} target="_blank" className="text-white font- hover:decoration-white hover:decoration-wavy transition-all duration-300">Head to the page</a></div>
+                            <div className="mt-2 text-xl">Followers: {instagramData.followers}</div>
+                            <div className="mt-2 text-xl">Average Likes: {instagramData.avgLikes}</div>
+                            <div className="mt-2 text-xl">Average Comments: {instagramData.avgComments}</div>
+                            <div className="mt-2 text-xl mb-2">Engagement Rate: {(instagramData.engageRate * 100).toFixed(3)}%</div>
+                            <div className="mt-2 text-md">Tags:</div>
+                            <ArrayElements 
+                                items={instagramData.hashtags}
+                            />
+                            <div className="mt-2 text-xl">Related Users</div>
+                            <div className="h-auto md:h-[450px] md:overflow-x-scroll md:no-scrollbar md:flex md:flex-row">
+                                    {
+                                       relatedUsers!==undefined?(
+                                            relatedUsers.map((user) => (
+                                                <SummaryCard key={user} influencerName={user} platform={platform} setPlatform={setPlatform}/>
+                                            ))
+                                       )
+                                       :
+                                       (
+                                        <div>
+                                            No Related Users found
+                                        </div>
+                                        )
+                                        // console.log(relatedUsers)
+                                        // <SummaryCard key={relatedUsers[0]} influencerName={relatedUsers[0]} platform={platform} setPlatform={setPlatform}/>
+                                    }
+                            </div>
+                        </div>
+                        )}
+                    </div>
+
+                    <div>
+                        {yLoad?(
+                            <div className="flex flex-col items-center justify-center max-w-full md:w-80 my-4 mx-1 md:mx-2 h-auto bg-zYellow-500 shadow-harsh10px p-4 border-black border-2 text-white">
+                                <div className='w-[40px] h-[40px] border-[4px] border-zYellow-900 border-t-[4px] border-t-zYellow-100 rounded-full animate-spin'></div>
+                            </div>
+                        )
+                        :
+                        (
+                        <div className={`bg-zYellow-500 p-2 mt-4 mx-2 border-2 border-black shadow-harsh5px ${youtubeAvailable?'block':'hidden'}`}>
+                            <div className="font-bold text-2xl mt-2">Youtube Statistics</div>
+                            <div><a href={`https://www.youtube.com/${youtubeData.displayId}/`} target="_blank" className="text-white font- hover:decoration-white hover:decoration-wavy transition-all duration-300">Head to the page</a></div>
+                            <div className="mt-2 text-xl">Subscribers: {youtubeHistoricalData.subscribers}</div>
+                            <div className="mt-2 text-xl">Engagement Rate (Last 20 Uploads): {(youtubeData.engageRateR20 * 100).toFixed(3)}%</div>
+                            <div className="mt-2 text-xl">Engagement Rate (Last 1 Year): {(youtubeData.engageRate1Y * 100).toFixed(3)}%</div>
+                            <div className="mt-2 text-xl">Average Likes (Last 20 Uploads): {youtubeData.avgLikesR20}</div>
+                            <div className="mt-2 text-xl">Average Likes (Last 1 Year): {youtubeData.avgLikes1Y}</div>
+                            <div className="mt-2 text-xl">Average Comments (Last 20 Uploads): {youtubeData.avgCommentsR20}</div>
+                            <div className="mt-2 text-xl">Average Comments (Last 1 Year): {youtubeData.avgComments1Y}</div>
+                            <div className="mt-2 text-xl">Average views (Last 20 Uploads): {youtubeData.avgViewsR20}</div>
+                            <div className="mt-2 text-xl">Average views (Last 1 Year): {youtubeData.avgViews1Y}</div>
+                            <div className="mt-2 text-xl">Average Audience Age: {youtubeAdvancedData.dgAvgAge === 0?((youtubeAdvancedData.dgAvgAge) + ' Years'):'Not Available'}</div>
+                            <div className="mt-2 text-xl">Emails:</div>
+                            <div>
+                                {emails.length>0?(
+                                    <div className="flex flex-wrap">
+                                        <ArrayElements 
+                                            items={emails}
+                                        />
+                                    </div>
+                                ):('No Emails Found')}
+                            </div>
+                        </div>
+                        )}
                     </div>
                 </div>
             </div>
+        )}
         </div>
-    )
-}
+    )   
+}   

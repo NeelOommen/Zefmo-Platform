@@ -61,7 +61,6 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
     
 
     function storeData(){
-        localStorage.setItem('platform', platform)
         if(platform === 'Instagram'){
             // localStorage.setItem('instagramSearch', influencerName)
             localStorage.setItem('instagramSearch', JSON.stringify(influencerData))
@@ -99,6 +98,7 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
             localStorage.setItem('instagramSearch', 'NOT_AVAILABLE')
             localStorage.setItem('youtubeSearch', 'NOT_AVAILABLE')
         }
+        localStorage.setItem('platform', platform)
     }
 
     return(

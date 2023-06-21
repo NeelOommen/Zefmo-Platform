@@ -25,6 +25,8 @@ export default function Home() {
   const [presetName, setPresetName] = useState('')
   const [preset, setPreset] = useState({})
   const [presetList, setPresetList] = useState([])
+  const [errorFlag, setErrorFlag] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('Some new error')
 
   const [presetToLoad, setPresetToLoad] = useState({})
   const [loadPreset, setLoadPreset] = useState(false)
@@ -97,6 +99,15 @@ export default function Home() {
     setLoginButton('Login')
   }
 
+  function toastError(errMsg){
+    setErrorFlag(true)
+    setErrorMsg(errMsg)
+    setTimeout(()=>{
+      setErrorFlag(false)
+      setErrorMsg('')
+    }, 5000)
+  }
+
   function checkLocalLogin(){
     const userDataLocal = localStorage.getItem('loggedInUserData')
     if(userDataLocal !== null){
@@ -110,20 +121,28 @@ export default function Home() {
   }
 
   async function storePreset(){
-    await setDoc(doc(db, userData.uid, presetName), preset);
+    try{
+      const collectionID= userData.uid
+      await setDoc(doc(db, collectionID, presetName), preset);
+    }
+    catch(error){
+      console.log(error)
+      toastError('Something went wrong while adding this preset!')
+    }
     getPresets()
   }
 
   async function getPresets(){
     if(loggedIn === true){
-      const presetData = await getDocs(collection(db, userData.uid))
+      const collectionID = userData.uid
+      const presetData = await getDocs(collection(db, collectionID))
       setPresetList(presetData.docs)
-      console.log(presetData)
     }
   }
 
   async function removePreset(){
-    await deleteDoc(doc(db, userData.uid, presetToDelete))
+    const collectionID = userData.uid
+    await deleteDoc(doc(db, collectionID, presetToDelete))
     getPresets()
   }
 
@@ -189,6 +208,16 @@ export default function Home() {
           <span><a  href="https://icons8.com/icon/32292/instagram" className='underline text-zPink-500 decoration-wavy' target='_blank'>Instagram</a>, <a  href="https://icons8.com/icon/37325/youtube" className='underline text-zPink-500 decoration-wavy' target='_blank'>YouTube</a></span> icon by <a href="https://icons8.com" className='underline text-zGreen-500 decoration-wavy' target='_blank'>Icons8</a>
         </div>
       </div> */}
+      <div>
+        {errorFlag?(
+        <div className='bg-red-500 p-4 absolute bottom-0 left-0 mb-4 ml-4 w-fit text-black border-2 border-black shadow-harsh5px'>
+          {errorMsg}
+        </div>
+        )
+        :
+        (<div></div>)
+        }
+      </div>
     </main>
   )
 }
