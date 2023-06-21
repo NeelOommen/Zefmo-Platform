@@ -165,6 +165,7 @@ export default function Home() {
   return (
     <main className={`min-h-screen md:max-h-screen bg-zBlueGreen-500 min-w-screen max-w-screen flex flex-col items-center ${menuCollapsed?'overflow-y-clip':'overflow-y-clip'}`}> 
     <Head>
+      <link rel="shortcut icon" href="/public/deco.ico" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
       <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Poppins:wght@700&display=swap" rel="stylesheet" />
