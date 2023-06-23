@@ -2,6 +2,10 @@
 
 import Image from 'next/image'
 import logo from 'public/base.png'
+import instagramLogo from 'public/instagramLogo.png'
+import facebookLogo from 'public/facebookLogo.png'
+import linkedinLogo from 'public/linkedinLogo.png'
+import youtubeLogo from 'public/youtubeLogo.png'
 import lines from 'public/isometric.svg'
 import SearchComponent from '@/components/SearchComponent/page'
 import ResultSummary from '@/components/ResultSummary/page'
@@ -163,7 +167,7 @@ export default function Home() {
   }, [])
 
   return (
-    <main className={`min-h-screen md:max-h-screen bg-zBlueGreen-500 min-w-screen max-w-screen flex flex-col items-center ${menuCollapsed?'overflow-y-clip':'overflow-y-clip'}`}> 
+    <main className={`min-h-screen h-fit md:max-h-screen bg-zBlueGreen-500 min-w-screen max-w-screen flex flex-col items-center ${menuCollapsed?'overflow-y-clip':'overflow-y-hidden'}`}> 
     <Head>
       <link rel="shortcut icon" href="/public/deco.ico" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -182,7 +186,7 @@ export default function Home() {
 
       <PresetNameModal modalFlag={showModal} setModalFlag={setShowModal} presetName={presetName} setPresetName={setPresetName} preset={preset} setPreset={setPreset} storeDoc={storePreset}/>
 
-      <div className={`absolute left-0 top-0 w-32 max-w-full bg-zBlueGreen-500 md:border-r-2 md:border-black min-h-screen ${menuCollapsed?'w-0 opacity-0 -translate-x-96':'w-screen md:w-64 opacity-100 translate-x-0'} transition-all duration-300`}>
+      <div className={`absolute left-0 top-0 w-32 max-w-full bg-zBlueGreen-500 md:border-r-2 md:border-black min-h-screen ${menuCollapsed?'w-0 opacity-0 -translate-x-96':'w-screen md:w-64 opacity-100 translate-x-0 fixed'} transition-all duration-300`}>
         <div className={`px-4 py-2 font-poppins m-2 border-2 text-zGreen-900 w-full bg-zGreen-500 border-zGreen-900 hover:border-zGreen-500 hover:text-zGreen-500 hover:bg-zGreen-900 transition-all duration-300 hover:rounded-2xl max-w-fit`} onClick={menuCollapse}>Close Menu</div>
         <div className='font-poppins text-black text-xl mx-2'>Presets</div>
           <div className='h-96 overflow-y-auto'>
@@ -210,11 +214,57 @@ export default function Home() {
         </div>
       </div>
 
-      {/* <div className='w-full bg-zPurple-500 mt-2flex flex-row'>
-        <div className='mx-4 my-2 w-fit bg-white py-1 px-2 border-2 border-black flex flex-col items-center text-sm text-black'>
-          <span><a  href="https://icons8.com/icon/32292/instagram" className='underline text-zPink-500 decoration-wavy' target='_blank'>Instagram</a>, <a  href="https://icons8.com/icon/37325/youtube" className='underline text-zPink-500 decoration-wavy' target='_blank'>YouTube</a></span> icon by <a href="https://icons8.com" className='underline text-zGreen-500 decoration-wavy' target='_blank'>Icons8</a>
+      <div className='w-full bg-zPurple-500 mt-2 flex md:flex-row flex-col items-center h-fit md:h-32 border-black border-t-2'>
+        <div className='flex flex-row items-center'>
+          <span className='text-xs ml-4'>© 2017 to 2023 Zefmo Media Pvt. Ltd. | All rights reserved</span>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <a href='/termsandconditions' target='_blank'>
+            <span className='text-xs hover:text-zPink-500 decoration-white hover:decoration-zPink-500 underline transition-all duration-300'>Terms and Conditions</span>
+          </a>
         </div>
-      </div> */}
+        <div className='flex flex-row items-center'>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <a href='https://www.instagram.com/zefmomedia/' target='_blank'>
+            <Image 
+              src={instagramLogo}
+              height={20}
+              width={20}
+              alt={'Instagram logo'}
+              className='filter invert hover:scale-125 transition-all duration-300'
+            />
+          </a>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <a href='https://www.youtube.com/@zefmomedia5071' target='_blank'>
+            <Image 
+              src={youtubeLogo}
+              height={20}
+              width={20}
+              alt={'Youtube logo'}
+              className='filter invert hover:scale-125 transition-all duration-300'
+            />
+          </a>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <a href='https://www.linkedin.com/company/zefmo' target='_blank'>
+            <Image 
+              src={linkedinLogo}
+              height={20}
+              width={20}
+              alt={'Linkedin logo'}
+              className='filter invert hover:scale-125 transition-all duration-300'
+            />
+          </a>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <a href='https://www.facebook.com/zefmomedia/' target='_blank'>
+            <Image 
+              src={facebookLogo}
+              height={20}
+              width={20}
+              alt={'Facebook logo'}
+              className='filter invert hover:scale-125 transition-all duration-300'
+            />
+          </a>  
+        </div>
+      </div>
       <div>
         {errorFlag?(
         <div className='bg-red-500 font-opensans p-4 absolute bottom-0 left-0 mb-4 ml-4 w-fit text-black border-2 border-black shadow-harsh5px'>
