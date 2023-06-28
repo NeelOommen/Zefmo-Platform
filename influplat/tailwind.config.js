@@ -7,6 +7,28 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        bgAnim: 'bgKeyFrames 8s infinite',
+      },
+      keyframes: {
+        bgKeyFrames: {
+          '0%': {
+            transform: 'translate(0px,0px) scale(0.8)'
+          },
+          '25%': {
+            transform: 'translate(-100%,60px) scale(1)'
+          },
+          '50%': {
+            transform: 'translate(0px,0px) scale(1.5)'
+          },
+          '75%': {
+            transform: 'translate(100%,-60px) scale(1)'
+          },
+          '100%': {
+            transform: 'translate(0px,0px) scale(0.8)'
+          }
+        },
+      },
       fontFamily: {
         'opensans': ['Open Sans', 'sans-serif'],
         'poppins': ['Poppins', 'sans-serif']
@@ -33,7 +55,9 @@ module.exports = {
           900: '#795d22'
         },
         zRed: {
-          500: '#e5222f'
+          100: '#f5a7ac',
+          500: '#e5222f',
+          900: '#2e0709'
         },
         zPink: {
           100: '#f8bbd7',
