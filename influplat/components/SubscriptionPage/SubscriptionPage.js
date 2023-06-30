@@ -5,7 +5,7 @@ import { createCheckoutSession } from "@/stripe/createCheckoutSession"
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useState } from "react"
 
-export default function SubscriptionPage({ page, setPage}){
+export default function SubscriptionPage(){
     const [user, userLoading] = useAuthState(auth)
     const [buttonText, setButtonText] = useState('Go Premium!')
 
@@ -15,8 +15,6 @@ export default function SubscriptionPage({ page, setPage}){
     }
 
     function logoutHandler(){
-        setPage(0)
-        setTimeout(() => {},1000)
         auth.signOut()
     }
 

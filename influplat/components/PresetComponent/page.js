@@ -1,6 +1,6 @@
 export default function PresetComponent({ loggedIn, data, presetToLoad, setPresetToLoad, presetFlag, setPresetFlag, presetToDelete, setPresetToDelete, deletePreset, setDeletePreset }){
     function handleClick(){
-        setPresetToLoad(data._document.data.value.mapValue.fields)
+        setPresetToLoad(data._document.data.value.mapValue.fields.data.mapValue.fields)
         setPresetFlag(true)
     }
 

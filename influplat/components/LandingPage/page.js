@@ -8,7 +8,7 @@ import logo from 'public/logoStyle1.png'
 import Image from 'next/image';
 
 
-export default function LandingPage({ page, setPage }){
+export default function LandingPage(){
 
     //persistenceMethod()
     const gProvider = new GoogleAuthProvider()
@@ -31,7 +31,6 @@ export default function LandingPage({ page, setPage }){
               photoURL: user.photoURL,
           }
             await setDoc(doc(db, "users", user.uid), uData);
-            setPage(1)
           })
           .catch((error) => {
             console.log(error)

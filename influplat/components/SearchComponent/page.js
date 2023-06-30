@@ -569,8 +569,8 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
                     onChange={(e)=>platformChange(e.target.value)}
                     value={platform}
                 >
-                    <option value='Instagram'>Instagram</option>
-                    <option value='Youtube'>Youtube</option>
+                    <option value='Instagram' key={1}>Instagram</option>
+                    <option value='Youtube' key={2}>Youtube</option>
                 </select>
                 <div className={`max-w-full ${(collapsed === true || platform!='Instagram')? 'hidden':'block'}`}>
                     {/* Instagram Filters */}

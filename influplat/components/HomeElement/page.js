@@ -6,17 +6,13 @@ import instagramLogo from 'public/instagramLogo.png'
 import facebookLogo from 'public/facebookLogo.png'
 import linkedinLogo from 'public/linkedinLogo.png'
 import youtubeLogo from 'public/youtubeLogo.png'
-import lines from 'public/isometric.svg'
 import SearchComponent from '@/components/SearchComponent/page'
 import ResultSummary from '@/components/ResultSummary/page'
 import { useEffect, useState } from 'react'
-import { initializeApp } from 'firebase/app'
-import { getAuth, signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
-import { doc, collection, getDocs, setDoc, deleteDoc } from 'firebase/firestore'
+import { doc, collection, getDocs, setDoc, deleteDoc, or } from 'firebase/firestore'
 import PresetNameModal from '@/components/PresetNameModal/page';
 import PresetComponent from '@/components/PresetComponent/page';
-import app from '@/firebase/firebaseClient';
+import { db, auth } from '@/firebase/firebaseClient';
 
 export default function HomeElement(){
     const [colFlag, setColFlag] = useState(false)
@@ -43,47 +39,10 @@ export default function HomeElement(){
 
     const [userData, setUserData] = useState({})
 
-    const db = getFirestore(app)
-    const auth = getAuth(app)
-    const persistenceMethod = async () => {
-      await setPersistence(auth, browserLocalPersistence)
-    }
-
-    //persistenceMethod()
-    const gProvider = new GoogleAuthProvider()
+    const [firstRender, setFirstRender] = useState(true)
 
     function menuCollapse(){
       setMenuCollapseState(!menuCollapsed)
-    }
-
-    function doLogin(){
-      const userDataLocal = localStorage.getItem('loggedInUserData')
-      if(userDataLocal === null){
-        signInWithPopup(auth, gProvider)
-          .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result)
-            const token = credential.accessToken
-            const user = result.user
-            setUserData(user)
-            const btnString = 'Logged in as ' + user.displayName
-            setLoginButton(btnString)
-            setLoggedIn(true)
-            localStorage.setItem('loggedInUserData', JSON.stringify(user))
-          })
-          .catch((error) => {
-            console.log(error)
-            setLoggedIn(false)
-            localStorage.removeItem('loggedInUserData')
-          })
-      }
-      else{
-        const userDataTemp = JSON.parse(userDataLocal)
-        const btnString = 'Logged in as ' + userDataTemp.displayName
-        setLoginButton(btnString)
-        setUserData(userDataTemp)
-        setLoggedIn(true)
-        localStorage.setItem('loggedInUserData', userDataLocal)
-      }
     }
 
     function doLogOut(){
@@ -102,22 +61,16 @@ export default function HomeElement(){
       }, 5000)
     }
 
-    function checkLocalLogin(){
-      const userDataLocal = localStorage.getItem('loggedInUserData')
-      if(userDataLocal !== null){
-        const userDataTemp = JSON.parse(userDataLocal)
-        const btnString = 'Logged in as ' + userDataTemp.displayName
-        setLoginButton(btnString)
-        setUserData(userDataTemp)
-        setLoggedIn(true)
-        localStorage.setItem('loggedInUserData', userDataLocal)
-      }
+    function doLogin(){
+      setLoginButton(`Logged in as ${auth.currentUser.displayName}`)
     }
+
 
     async function storePreset(){
       try{
-        const collectionID= userData.uid
-        await setDoc(doc(db, collectionID, presetName), preset);
+        const userID= userData
+        const pName = presetName
+        await setDoc(doc(db, 'users', userID, 'presets', pName), preset);
       }
       catch(error){
         console.log(error)
@@ -128,15 +81,15 @@ export default function HomeElement(){
 
     async function getPresets(){
       if(loggedIn === true){
-        const collectionID = userData.uid
-        const presetData = await getDocs(collection(db, collectionID))
+        const userID = userData
+        const presetData = await getDocs(collection(db, `users/${userID}/presets/`))
         setPresetList(presetData.docs)
       }
     }
 
     async function removePreset(){
-      const collectionID = userData.uid
-      await deleteDoc(doc(db, collectionID, presetToDelete))
+      const userId = userData
+      await deleteDoc(doc(db, 'users',userId,'presets', presetToDelete))
       getPresets()
     }
 
@@ -152,8 +105,17 @@ export default function HomeElement(){
     }, [deletePreset])
 
     useEffect(() => {
-      checkLocalLogin()
-    })
+      if(presetName!='undefined' && presetName!='' && typeof(presetName)!=typeof(undefined)){
+        storePreset()
+      }
+    }, [presetName])
+
+    useEffect(() => {
+      setUserData(auth.currentUser.uid)
+      setLoggedIn(true)
+      doLogin()
+    }, [])
+
 
     return(
         <main className={`min-h-screen h-fit md:max-h-screen bg-zBlueGreen-500 min-w-screen max-w-screen flex flex-col items-center ${menuCollapsed?'overflow-y-clip':'overflow-y-hidden'}`}>     
@@ -203,6 +165,10 @@ export default function HomeElement(){
           <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
           <a href='/termsandconditions' target='_blank'>
             <span className='text-xs hover:text-zPink-500 decoration-white hover:decoration-zPink-500 underline transition-all duration-300'>Terms and Conditions</span>
+          </a>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <a href='/Support' target='_blank'>
+            <span className='text-xs hover:text-zPink-500 decoration-white hover:decoration-zPink-500 underline transition-all duration-300'>Support</span>
           </a>
         </div>
         <div className='flex flex-row items-center'>
