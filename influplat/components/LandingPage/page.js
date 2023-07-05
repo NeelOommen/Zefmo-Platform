@@ -3,7 +3,6 @@
 import { auth, db } from '@/firebase/firebaseClient';
 import { signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { doc, collection, getDocs, setDoc, deleteDoc } from 'firebase/firestore';
-import { redirect } from 'next/navigation';
 import logo from 'public/logoStyle1.png'
 import Image from 'next/image';
 

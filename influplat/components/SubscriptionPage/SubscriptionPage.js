@@ -22,7 +22,7 @@ export default function SubscriptionPage(){
         <div className='bg-zBlueGreen-500 w-screen md:h-screen h-auto py-4 pb-0 md:pb-4'>
             <Image 
                 src={logo}
-                alt='Zefmo's Logo
+                alt="Zefmo's Logo"
                 className='ml-8 mb-2 w-36'
             />
             <div className='grid md:grid-cols-2'>

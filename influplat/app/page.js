@@ -19,14 +19,14 @@ export default function Home() {
     // <HomeElement />
     <div className='overflow-hidden bg-zBlueGreen-500'>
     {!user && userLoading && <LoadingPage />}
-    {!user && !userLoading && <LandingPage page={page} setPage={setPage}/>
+    {!user && !userLoading && <LandingPage />
     }
     {user && !userLoading && (
       userIsPremium?
       (<HomeElement />)
       :
       (
-          <SubscriptionPage page={page} setPage={setPage}/>
+          <SubscriptionPage />
       )
     )}
     </div>

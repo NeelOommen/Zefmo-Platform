@@ -16,8 +16,6 @@ export default function PresetNameModal({ modalFlag, setModalFlag, presetName, s
         setPreset(nPreset)
 
         storeDoc()
-
-        //console.log('done')
     }
 
     return(

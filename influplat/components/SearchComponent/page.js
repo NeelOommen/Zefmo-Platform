@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ArrayElements from "../ArrayElements/page";
+import { Fascinate_Inline } from "next/font/google";
 
 
 export default function SearchComponent({ offset, setOffset, setList, influencerList, setValid, validFlag, platform, setPlatform, loginStatus, showModal, setShowModal, preset, setPreset, presetToLoad, setPresetToLoad, presetFlag, setPresetFlag, colFlag, setColFlag }) {
@@ -36,6 +37,8 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
     const [topicList, setTopicList] = useState([]);
     const [nicheList, setNicheList] = useState([]);
 
+    const initialRender = useRef(true);
+
     function getCategories(){
         fetch('https://dev.creatordb.app/v2/topicTable', {
           headers: {
@@ -45,7 +48,6 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
         })
         .then(response => response.json())
         .then(data => {
-            //console.log(data)
             const nicheKeys = Object.keys(data.data.niches)
             const topicKeys = Object.keys(data.data.topics)
             
@@ -353,7 +355,6 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
         }
 
         //topic filter
-        console.log(topicList)
 
          if(topicList.length != 0){
             const filter = {
@@ -428,7 +429,6 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
         }).then(response => response.json())
         .then(data => {
             setList(data)
-            console.log(data)
             setValid(true)
         })
         .catch(error => {
@@ -550,6 +550,16 @@ export default function SearchComponent({ offset, setOffset, setList, influencer
             alert('You must be logged in to save presets.')
         }
     }
+
+    useEffect(() => {
+        if(initialRender.current) {
+            initialRender.current = false
+        }
+        else {
+            setValid(false)
+            searchHandler()
+        }
+    }, [offset])
 
     const countryOptions = ['','Afghanistan','Albania','Algeria','American Samoa','Andorra','Angola','Anguilla','Antarctica','Antigua & Barbuda','Argentina','Armenia','Aruba','Australia','Austria','Azerbaijan','Bahamas','Bahrain','Bangladesh','Barbados','Belarus','Belgium','Belize','Benin','Bermuda','Bhutan','Bolivia','Bosnia & Herzegovina','Bosnia and Herzegovina','Botswana','Brazil','British Indian Ocean Territory','British Virgin Islands','Brunei','Bulgaria','Burkina Faso','Burundi','Cabo Verde','Cambodia','Cameroon','Canada','Cape Verde','Cayman Islands','Chad','Chile','China','Christmas Island','Colombia','Congo - Brazzaville','Congo - Kinshasa','Costa Rica','Croatia','Cuba','Curaçao','Cyprus','Czech Republic','Czechia','Côte d’Ivoire','Denmark','Djibouti','Dominica','Dominican Republic','Ecuador','Egypt','El Salvador','Eritrea','Estonia','Eswatini','Ethiopia','Falkland Islands (Islas Malvinas)','Faroe Islands','Fiji','Finland','France','French Guiana','French Polynesia','Gabon','Gambia','Georgia','Germany','Ghana','Gibraltar','Greece','Greenland','Grenada','Guadeloupe','Guam','Guatemala','Guernsey','Guinea','Guinea-Bissau','Guyana','Haiti','Heard & McDonald Islands','Honduras','Hong Kong','Hungary','Iceland','India','Indonesia','Iran','Iraq','Ireland','Isle of Man','Israel','Italy','Ivory Coast','Jamaica','Japan','Jersey','Jordan','Kazakhstan','Kenya','Kosovo','Kuwait','Kyrgyzstan','Laos','Latvia','Lebanon','Liberia','Libya','Liechtenstein','Lithuania','Luxembourg','Macao','Macedonia','Madagascar','Malaysia','Maldives','Mali','Malta','Martinique','Mauritania','Mauritius','Mayotte','Mexico','Moldova','Monaco','Mongolia','Montenegro','Morocco','Mozambique','Myanmar (Burma)','Myanmar','Namibia','Nepal','Netherlands','New Caledonia','New Zealand','Nicaragua','Nigeria','Niue','North Korea','North Macedonia','Norway','Oman','Pakistan','Palau','Palestine','Panama','Papua New Guinea','Paraguay','Peru','Philippines','Poland','Portugal','Puerto Rico','Qatar','Romania','Russia','Rwanda','Réunion','Samoa','San Marino','Saudi Arabia','Senegal','Serbia','Seychelles','Sierra Leone','Singapore','Sint Maarten','Slovakia','Slovenia','Solomon Islands','Somalia','South Africa','South Georgia & South Sandwich Islands','South Korea','South Sudan','Spain','Sri Lanka','St. Barthélemy','St. Kitts & Nevis','St. Lucia','St. Martin','St. Vincent & Grenadines','Sudan','Suriname','Sweden','Switzerland','Syria','Taiwan','Tajikistan','Tanzania','Thailand','Timor-Leste','Togo','Tonga','Trinidad & Tobago','Trinidad and Tobago','Tunisia','Turkey','Turkmenistan','Turks and Caicos Islands','Türkiye','U.S. Outlying Islands','U.S. Virgin Islands','Uganda','Ukraine','United Arab Emirates','United Kingdom','United States','Uruguay','Uzbekistan','Vanuatu','Vatican City','Venezuela','Vietnam','Western Sahara','Yemen','Zambia','Zimbabwe','Åland Islands']
 

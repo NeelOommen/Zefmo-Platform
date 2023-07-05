@@ -44,7 +44,6 @@ export default function SummaryCard({ influencerName, platform, setPlatform }){
                 setYoutubeData(data.data.basicYoutube)
                 setYoutubeAdvanced(data.data.detailYoutube)
                 setYoutubeHistory(data.data.histories[0])
-                console.log(youtubeHistory)
             })
             .catch(error => {
                 console.log(error)

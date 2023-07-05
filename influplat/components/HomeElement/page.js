@@ -12,7 +12,8 @@ import { useEffect, useState } from 'react'
 import { doc, collection, getDocs, setDoc, deleteDoc, or } from 'firebase/firestore'
 import PresetNameModal from '@/components/PresetNameModal/page';
 import PresetComponent from '@/components/PresetComponent/page';
-import { db, auth } from '@/firebase/firebaseClient';
+import { db, auth, functions } from '@/firebase/firebaseClient';
+import { httpsCallable } from 'firebase/functions';
 
 export default function HomeElement(){
     const [colFlag, setColFlag] = useState(false)
@@ -38,8 +39,6 @@ export default function HomeElement(){
     const [offset, setOffset] = useState(0)
 
     const [userData, setUserData] = useState({})
-
-    const [firstRender, setFirstRender] = useState(true)
 
     function menuCollapse(){
       setMenuCollapseState(!menuCollapsed)
@@ -80,17 +79,41 @@ export default function HomeElement(){
     }
 
     async function getPresets(){
-      if(loggedIn === true){
-        const userID = userData
-        const presetData = await getDocs(collection(db, `users/${userID}/presets/`))
-        setPresetList(presetData.docs)
+      try{
+        if(loggedIn === true){
+          const userID = userData
+          const presetData = await getDocs(collection(db, `users/${userID}/presets/`))
+          setPresetList(presetData.docs)
+        }
+      }
+      catch(error){
+        console.log(error)
+        toastError('There was an error getting your presets.')
       }
     }
 
     async function removePreset(){
-      const userId = userData
-      await deleteDoc(doc(db, 'users',userId,'presets', presetToDelete))
-      getPresets()
+      try{
+        const userId = userData
+        await deleteDoc(doc(db, 'users',userId,'presets', presetToDelete))
+        getPresets()
+      }
+      catch(error){
+        console.log(error)
+        toastError('We were not able to remove your preset.')
+      }
+    }
+
+    async function doCancel(){
+      const functionRef = httpsCallable(functions, 'ext-firestore-stripe-payments-createPortalLink')
+      try{
+        const { data } = await functionRef({ returnUrl: window.location.origin })
+        window.location.assign(data.url)
+      }
+      catch(error){
+        console.log(error)
+        toastError('Something went wrong, please try in a while')
+      }
     }
 
     useEffect(() => {
@@ -131,16 +154,17 @@ export default function HomeElement(){
 
       <PresetNameModal modalFlag={showModal} setModalFlag={setShowModal} presetName={presetName} setPresetName={setPresetName} preset={preset} setPreset={setPreset} storeDoc={storePreset}/>
 
-      <div className={`absolute left-0 top-0 w-32 max-w-full bg-zBlueGreen-500 md:border-r-2 md:border-black min-h-screen ${menuCollapsed?'w-0 opacity-0 -translate-x-96':'w-screen md:w-64 opacity-100 translate-x-0 fixed'} transition-all duration-300`}>
+      <div className={`absolute left-0 top-0 w-32 max-w-full bg-zBlueGreen-500 md:border-r-2 md:border-black min-h-screen ${menuCollapsed?'w-0 opacity-0 -translate-x-96':'w-screen md:w-64 opacity-100 translate-x-0 fixed'} transition-all duration-300 md:shadow-harsh10px`}>
         <div className={`px-4 py-2 font-poppins m-2 border-2 text-zGreen-900 w-full bg-zGreen-500 border-zGreen-900 hover:border-zGreen-500 hover:text-zGreen-500 hover:bg-zGreen-900 transition-all duration-300 hover:rounded-2xl max-w-fit`} onClick={menuCollapse}>Close Menu</div>
         <div className='font-poppins text-black text-xl mx-2'>Presets</div>
-          <div className='h-96 overflow-y-auto'>
-            {
-              presetList.map((preset) => (
-                <PresetComponent key={preset.id} loggedIn={loggedIn} data={preset} presetToLoad={presetToLoad} setPresetToLoad={setPresetToLoad} presetFlag={loadPreset} setPresetFlag={setLoadPreset} presetToDelete={presetToDelete} setPresetToDelete={setPresetToDelete} deletePreset={deletePreset} setDeletePreset={setDeletePreset}/>
-              ))
-            }
-          </div>
+        <div className='h-56 overflow-y-auto'>
+          {
+            presetList.map((preset) => (
+              <PresetComponent key={preset.id} loggedIn={loggedIn} data={preset} presetToLoad={presetToLoad} setPresetToLoad={setPresetToLoad} presetFlag={loadPreset} setPresetFlag={setLoadPreset} presetToDelete={presetToDelete} setPresetToDelete={setPresetToDelete} deletePreset={deletePreset} setDeletePreset={setDeletePreset}/>
+            ))
+          }
+        </div>
+        <div className={`absolute bottom-36 text-center py-2 font-bold text-zRed-900 w-full bg-zRed-500 border-2 border-zRed-900 hover:border-zRed-500 hover:text-zRed-500 hover:bg-zRed-900 font-opensans transition-all duration-300 ${loggedIn?'block':'hidden'}`} onClick={doCancel}>Manage Subscription</div>
         <div className={`absolute bottom-20 text-center py-2 font-bold text-zGreen-900 w-full bg-zGreen-500 border-2 border-zGreen-900 hover:border-zGreen-500 hover:text-zGreen-500 hover:bg-zGreen-900 font-opensans transition-all duration-300 ${loggedIn?'block':'hidden'}`} onClick={doLogOut}>Log Out</div>
         <div className='absolute bottom-0 text-center py-2 font-bold text-zGreen-900 w-full bg-zGreen-500 border-2 border-zGreen-900 hover:border-zGreen-500 hover:text-zGreen-500 hover:bg-zGreen-900 font-opensans transition-all duration-300' onClick={doLogin}>{loginButton}</div>
       </div>
@@ -159,20 +183,20 @@ export default function HomeElement(){
         </div>
       </div>
 
-      <div className='w-full bg-zPurple-500 mt-2 flex md:flex-row flex-col items-center h-fit md:h-32 border-black border-t-2'>
+      <div className='w-full bg-zPurple-500 mt-auto flex md:flex-row flex-col items-center h-fit md:h-32 border-black border-t-2'>
         <div className='flex flex-row items-center'>
-          <span className='text-xs ml-4'>© 2017 to 2023 Zefmo Media Pvt. Ltd. | All rights reserved</span>
-          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <span className='text-xs ml-2 md:ml-4'>© 2017 to 2023 Zefmo Media Pvt. Ltd. | All rights reserved</span>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-2 md:mx-4'></div>
           <a href='/termsandconditions' target='_blank'>
-            <span className='text-xs hover:text-zPink-500 decoration-white hover:decoration-zPink-500 underline transition-all duration-300'>Terms and Conditions</span>
+            <span className='text-xs hover:text-zPink-500 w-fit decoration-white hover:decoration-zPink-500 underline transition-all duration-300'>Terms and Conditions</span>
           </a>
-          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-2 md:mx-4'></div>
           <a href='/Support' target='_blank'>
-            <span className='text-xs hover:text-zPink-500 decoration-white hover:decoration-zPink-500 underline transition-all duration-300'>Support</span>
+            <span className='text-xs hover:text-zPink-500 decoration-white hover:decoration-zPink-500 underline transition-all duration-300 mx-2 md:mx-4'>Support</span>
           </a>
         </div>
         <div className='flex flex-row items-center'>
-          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-2 md:mx-4'></div>
           <a href='https://www.instagram.com/zefmomedia/' target='_blank'>
             <Image 
               src={instagramLogo}
@@ -182,7 +206,7 @@ export default function HomeElement(){
               className='filter invert hover:scale-125 transition-all duration-300'
             />
           </a>
-          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-2 md:mx-4'></div>
           <a href='https://www.youtube.com/@zefmomedia5071' target='_blank'>
             <Image 
               src={youtubeLogo}
@@ -192,7 +216,7 @@ export default function HomeElement(){
               className='filter invert hover:scale-125 transition-all duration-300'
             />
           </a>
-          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-2 md:mx-4'></div>
           <a href='https://www.linkedin.com/company/zefmo' target='_blank'>
             <Image 
               src={linkedinLogo}
@@ -202,7 +226,7 @@ export default function HomeElement(){
               className='filter invert hover:scale-125 transition-all duration-300'
             />
           </a>
-          <div className='bg-white h-8 w-0 border-[1px] border-white mx-4'></div>
+          <div className='bg-white h-8 w-0 border-[1px] border-white mx-2 md:mx-4'></div>
           <a href='https://www.facebook.com/zefmomedia/' target='_blank'>
             <Image 
               src={facebookLogo}

@@ -35,7 +35,6 @@ export default function InstagramCreator(){
             const idata = JSON.parse(iStr)
             setInstagramData(idata)
             const users = instagramData.relatedUsers
-            console.log(users)
             setRelatedUsers(users)
             setIAvailable(true)
             setILoad(false)
@@ -57,8 +56,6 @@ export default function InstagramCreator(){
                     setYoutubeHistoryData(data.data.histories[0])
                     setYAvailable(true)
                     setYLoad(false)
-                    //console.log(youtubeAdvancedData)
-                    //console.log(youtubeHistoricalData)
     
                     if(youtubeData.hasEmail === true){
                         fetch(`https://dev.creatordb.app/v2/youtubeEmail?youtubeId=${youtubeData.youtubeId}`, {
@@ -69,7 +66,6 @@ export default function InstagramCreator(){
                         })
                         .then(response => response.json())
                         .then(data => {
-                            console.log(data.data)
                             setEmails(data.data)
                             setLoading(false)
                         })
@@ -100,7 +96,6 @@ export default function InstagramCreator(){
             //get instagram data if available
             if(localStorage.getItem('getInstagram') === 'true'){
                 setILoad(true)
-                console.log(iStr)
                 localStorage.setItem('getInstagram', 'false')
                 fetch(`https://dev.creatordb.app/v2/instagramBasic?instagramId=${iStr}`, {
                     headers: {
@@ -179,7 +174,7 @@ export default function InstagramCreator(){
                             {/* <div className="h-auto md:h-[450px] md:overflow-x-scroll md:no-scrollbar md:flex md:flex-row">
                                     {
                                        relatedUsers!==undefined?(
-                                            relatedUsers.map((user) => (
+                                            relatedUsers?.map((user) => (
                                                 <SummaryCard key={user} influencerName={user} platform={platform} setPlatform={setPlatform}/>
                                             ))
                                        )
@@ -189,7 +184,6 @@ export default function InstagramCreator(){
                                             No Related Users found
                                         </div>
                                         )
-                                        // console.log(relatedUsers)
                                         // <SummaryCard key={relatedUsers[0]} influencerName={relatedUsers[0]} platform={platform} setPlatform={setPlatform}/>
                                     }
                             </div> */}
@@ -218,6 +212,10 @@ export default function InstagramCreator(){
                             <div className="mt-2 text-xl font-opensans">Average views (Last 20 Uploads): {youtubeData.avgViewsR20}</div>
                             <div className="mt-2 text-xl font-opensans">Average views (Last 1 Year): {youtubeData.avgViews1Y}</div>
                             <div className="mt-2 text-xl font-opensans">Average Audience Age: {youtubeAdvancedData.dgAvgAge === 0?((youtubeAdvancedData.dgAvgAge) + ' Years'):'Not Available'}</div>
+                            <div className="mt-2 text-xl font-opensans font-bold">Estimated Costs:</div>
+                            <div className="mt-2 text-xl font-opensans">Cost per engagement: {youtubeAdvancedData.hasOwnProperty('representedCost')?('$' + youtubeAdvancedData.representedCost.costPerEngage[0].toFixed(2) + ' to $' + youtubeAdvancedData.representedCost.costPerEngage[1].toFixed(2)):('Not Available')}</div>
+                            <div className="mt-2 text-xl font-opensans">Cost per 1000 views: {youtubeAdvancedData.hasOwnProperty('representedCost')?('$' + youtubeAdvancedData.representedCost.cpm[0].toFixed(2) + ' to $' + youtubeAdvancedData.representedCost.cpm[1].toFixed(2)):('Not Available')}</div>
+                            <div className="mt-2 text-xl font-opensans">Overall Cost: {youtubeAdvancedData.hasOwnProperty('representedCost')?('$' + youtubeAdvancedData.representedCost.overallCost[0].toFixed(2) + ' to $' + youtubeAdvancedData.representedCost.overallCost[1].toFixed(2)):('Not Available')}</div>
                             {/* <div className="mt-2 text-xl font-opensans">Emails:</div> */}
                             {/* <div>
                                 {emails.length>0?(

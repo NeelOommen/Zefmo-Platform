@@ -25,13 +25,13 @@ export default function ResultSummary({ offset, setOffset, setList, influencerLi
                             ))
                         }
                 </div>
-                {/* <div className='flex flex-col items-center w-full'>
-                    <div className={`flex flex-row min-w-full`}>
+                <div className='flex flex-col items-center justify-center w-full'>
+                    <div className={`flex flex-row items-center justify-center min-w-full`}>
                         <div className={`${offset===0?'text-gray-400':'text-black hover:text-zPink-500'} transition-all duration-300`} onClick={decreaseOffset}>{'<'}Previous &nbsp;</div>
                         <div>{offset+1} to {offset+25}</div>
                         <div className={`text-black hover:text-zPink-500 transition-all duration-300`} onClick={increaseOffset}>&nbsp; Next{'>'}</div>
                     </div>
-                </div> */}
+                </div>
             </div>
             :
             <div>

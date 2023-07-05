@@ -11,6 +11,7 @@ export default function Support(){
     const [msg, setMsg] = useState('')
     const [buttonMsg, setButtonMsg] = useState('Please Wait')
     const [ready, setReady] = useState(false)
+    const [phNo, setPhoneNumber] = useState('')
 
     function scriptLoad(){
         setReady(true)
@@ -26,12 +27,12 @@ export default function Support(){
         Email.send({
             SecureToken: '498cc3ab-08e2-4a73-9d03-a50aba1ce8fd',
             To: 'product@zefmo.com',
-            From: 'support@zefmo.com',
+            From: 'product@zefmo.com',
             Subject: 'Support required',
-            Body: msg
+            Body: msg + ' from ' + name + ', ' + email
         })
         .then(function (message){
-            console.log(message)
+            //put a toast here
         })
     }
 
@@ -48,25 +49,34 @@ export default function Support(){
                 alt="Zefmo's Logo"
                 className='ml-4 md:ml-8 w-36'
             />
-            <div className='bg-zPurple-500 w-fit mx-4 md:mx-8 h-auto mt-4 md:mt-6 px-4 md:px-8 my-4 py-4 md:py-6 border-2 border-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300'>
+            <div className='bg-zPurple-500 w-fit mx-4 md:mx-8 h-auto mt-4 md:mt-6 px-4 md:px-8 my-4 py-2 md:py-6 border-2 border-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300'>
                 <h1 className='font-poppins font-bold text-2xl md:text-7xl'>Get in contact with us!</h1>
                 <input 
                     type='text'
-                    placeholder='Name'
-                    className='my-4 w-full rounded-2xl h-12 p-4 border-2 border-black text-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300 focus:bg-zYellow-500 focus:text-white'
+                    placeholder='Name (Required)'
+                    className='my-2 w-full rounded-2xl h-12 px-4 border-2 border-black text-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300 focus:bg-zYellow-500 focus:text-white'
                     onChange={(e) => setName(e.target.value)}
                     value={name}
+                    required
                 />
                 <input 
                     type='email'
-                    placeholder='Email'
-                    className='my-4 w-full rounded-2xl h-12 p-4 border-2 border-black text-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300 focus:bg-zYellow-500 focus:text-white invalid:bg-red-500'
+                    placeholder='Email (Required)'
+                    className='my-2 w-full rounded-2xl h-12 px-4 border-2 border-black text-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300 focus:bg-zYellow-500 focus:text-white invalid:bg-red-500'
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
+                    required
+                />
+                <input 
+                    type='text'
+                    placeholder='Phone Number (Optional)'
+                    className='my-2 w-full rounded-2xl h-12 px-4 border-2 border-black text-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300 focus:bg-zYellow-500 focus:text-white invalid:bg-red-500'
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    value={phNo}
                 />
                 <textarea 
                     placeholder='How can we help you today?'
-                    className='my-4 w-full rounded-2xl p-4 border-2 border-black text-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300 focus:bg-zYellow-500 focus:text-white'
+                    className='my-2 w-full rounded-2xl px-4 py-2 border-2 border-black text-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300 focus:bg-zYellow-500 focus:text-white'
                     rows='6'
                     onChange={(e) => setMsg(e.target.value)}
                     value={msg}
