@@ -29,7 +29,7 @@ export default function SubscriptionPage(){
                 <div className=''>
                     <h1 className='font-poppins font-bold text-6xl ml-8'>Subscribe today!</h1>
                     <div className='w-fit md:w-11/12 h-auto font-opensans font-bold md:text-2xl bg-zYellow-500 hover:bg-zYellow-100 hover:text-zYellow-900 hover:rounded-2xl md:ml-8 ml-4 mx-4 my-4 md:px-8 px-2 md:py-12 py-6 border-2 border-black shadow-harsh5px hover:shadow-harsh10px transition-all duration-300'>
-                        Welcome to Zefmo Media's new Influencer Search platform that enables users to find the perfect influencers for their marketing campaigns. 
+                        Welcome to Zefmo Media&apos;s new Influencer Search platform that enables users to find the perfect influencers for their marketing campaigns. 
                         <br />
                         <br />
                         With advanced filtering options, brands can search based on criteria like demographics, niche, follower count, and location. The platform provides in-depth analytics and simplifies collaboration, empowering brands to make data-driven decisions and maximize the impact of their influencer marketing.
