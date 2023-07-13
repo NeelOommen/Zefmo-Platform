@@ -14,6 +14,7 @@ import PresetNameModal from '@/components/PresetNameModal/page';
 import PresetComponent from '@/components/PresetComponent/page';
 import { db, auth, functions } from '@/firebase/firebaseClient';
 import { httpsCallable } from 'firebase/functions';
+import ListNameModal from '../ListNameModal/ListNameModal';
 
 export default function HomeElement(){
     const [colFlag, setColFlag] = useState(false)
@@ -29,6 +30,8 @@ export default function HomeElement(){
     const [presetList, setPresetList] = useState([])
     const [errorFlag, setErrorFlag] = useState(false)
     const [errorMsg, setErrorMsg] = useState('Some new error')
+    const [listModal, setListModal] = useState(false)
+    const [listName, setListName] = useState('')
 
     const [presetToLoad, setPresetToLoad] = useState({})
     const [loadPreset, setLoadPreset] = useState(false)
@@ -67,7 +70,7 @@ export default function HomeElement(){
 
     async function storePreset(){
       try{
-        const userID= userData
+        const userID = userData
         const pName = presetName
         await setDoc(doc(db, 'users', userID, 'presets', pName), preset);
       }
@@ -76,6 +79,24 @@ export default function HomeElement(){
         toastError('Something went wrong while adding this preset!')
       }
       getPresets()
+    }
+
+    function listHandler(){
+      setListModal(true)
+    }
+
+    async function makeList(){
+      try{
+        const userID = userData
+        const lName = listName
+        const listData = {
+          accounts: []
+        }
+        await setDoc(doc(db, 'users', userID, 'lists', lName), listData)
+      }
+      catch(error){
+        console.log(error)
+      }
     }
 
     async function getPresets(){
@@ -153,13 +174,26 @@ export default function HomeElement(){
       </div>
 
       <PresetNameModal modalFlag={showModal} setModalFlag={setShowModal} presetName={presetName} setPresetName={setPresetName} preset={preset} setPreset={setPreset} storeDoc={storePreset}/>
+      <ListNameModal modalFlag={listModal} setModalFlag={setListModal} listName={listName} setListName={setListName} storeList={makeList}/>
 
       <div className={`absolute left-0 top-0 w-32 max-w-full bg-zBlueGreen-500 md:border-r-2 md:border-black min-h-screen ${menuCollapsed?'w-0 opacity-0 -translate-x-96':'w-screen md:w-64 opacity-100 translate-x-0 fixed'} transition-all duration-300 md:shadow-harsh10px`}>
         <div className={`px-4 py-2 font-poppins m-2 border-2 text-zGreen-900 w-full bg-zGreen-500 border-zGreen-900 hover:border-zGreen-500 hover:text-zGreen-500 hover:bg-zGreen-900 transition-all duration-300 hover:rounded-2xl max-w-fit`} onClick={menuCollapse}>Close Menu</div>
         <div className='font-poppins text-black text-xl mx-2'>Presets</div>
         <div className='h-56 overflow-y-auto'>
           {
-            presetList.map((preset) => (
+            presetList?.map((preset) => (
+              <PresetComponent key={preset.id} loggedIn={loggedIn} data={preset} presetToLoad={presetToLoad} setPresetToLoad={setPresetToLoad} presetFlag={loadPreset} setPresetFlag={setLoadPreset} presetToDelete={presetToDelete} setPresetToDelete={setPresetToDelete} deletePreset={deletePreset} setDeletePreset={setDeletePreset}/>
+            ))
+          }
+        </div>
+
+        <div className='flex flex-row items-center'>
+          <div className='font-poppins text-black text-xl mx-2'>Lists</div>
+          <div className="border-2 border-softBlack-500 mx-4 px-2 py-1 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={listHandler} >+</div>
+        </div>
+        <div className='h-56 overflow-y-auto'>
+          {
+            presetList?.map((preset) => (
               <PresetComponent key={preset.id} loggedIn={loggedIn} data={preset} presetToLoad={presetToLoad} setPresetToLoad={setPresetToLoad} presetFlag={loadPreset} setPresetFlag={setLoadPreset} presetToDelete={presetToDelete} setPresetToDelete={setPresetToDelete} deletePreset={deletePreset} setDeletePreset={setDeletePreset}/>
             ))
           }

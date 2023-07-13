@@ -3,7 +3,7 @@
 import { auth, db } from '@/firebase/firebaseClient';
 import { signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import { doc, collection, getDocs, setDoc, deleteDoc } from 'firebase/firestore';
-import logo from 'public/logoStyle1.png'
+import logo from 'public/landingLogo.png'
 import Image from 'next/image';
 
 
@@ -48,7 +48,7 @@ export default function LandingPage(){
             <Image 
               src={logo}
               alt="Company logo"
-              className='ml-4 w-[300px] md:w-[500px] block left-0'
+              className='ml-4 w-[350px] md:w-[600px] block left-0'
             />
           </div>
           <div className={`bg-zGreen-500 px-8 py-2 border-2  absolute z-50 bottom-16 shadow-harsh5px hover:shadow-harsh10px font-poppins border-softBlack-500 mx-4 my-4 flex flex-col items-center font-bold hover:bg-zPink-500 transition-all duration-300 text-xl active:scale-90 active:shadow-harsh5px hover:rounded-2xl`} onClick={doLogin}>Login</div>
