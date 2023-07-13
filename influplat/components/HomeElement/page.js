@@ -174,7 +174,7 @@ export default function HomeElement(){
       </div>
 
       <PresetNameModal modalFlag={showModal} setModalFlag={setShowModal} presetName={presetName} setPresetName={setPresetName} preset={preset} setPreset={setPreset} storeDoc={storePreset}/>
-      <ListNameModal modalFlag={listModal} setModalFlag={setListModal} listName={listName} setListName={setListName} storeList={makeList}/>
+      {/* <ListNameModal modalFlag={listModal} setModalFlag={setListModal} listName={listName} setListName={setListName} storeList={makeList}/> */}
 
       <div className={`absolute left-0 top-0 w-32 max-w-full bg-zBlueGreen-500 md:border-r-2 md:border-black min-h-screen ${menuCollapsed?'w-0 opacity-0 -translate-x-96':'w-screen md:w-64 opacity-100 translate-x-0 fixed'} transition-all duration-300 md:shadow-harsh10px`}>
         <div className={`px-4 py-2 font-poppins m-2 border-2 text-zGreen-900 w-full bg-zGreen-500 border-zGreen-900 hover:border-zGreen-500 hover:text-zGreen-500 hover:bg-zGreen-900 transition-all duration-300 hover:rounded-2xl max-w-fit`} onClick={menuCollapse}>Close Menu</div>
@@ -187,7 +187,7 @@ export default function HomeElement(){
           }
         </div>
 
-        <div className='flex flex-row items-center'>
+        {/* <div className='flex flex-row items-center'>
           <div className='font-poppins text-black text-xl mx-2'>Lists</div>
           <div className="border-2 border-softBlack-500 mx-4 px-2 py-1 bg-zGreen-500 shadow-harsh5px hover:shadow-harsh10px max-w-fit my-2 transition-all duration-300 active:scale-90 active:shadow-harsh5px" onClick={listHandler} >+</div>
         </div>
@@ -197,7 +197,7 @@ export default function HomeElement(){
               <PresetComponent key={preset.id} loggedIn={loggedIn} data={preset} presetToLoad={presetToLoad} setPresetToLoad={setPresetToLoad} presetFlag={loadPreset} setPresetFlag={setLoadPreset} presetToDelete={presetToDelete} setPresetToDelete={setPresetToDelete} deletePreset={deletePreset} setDeletePreset={setDeletePreset}/>
             ))
           }
-        </div>
+        </div> */}
         <div className={`absolute bottom-36 text-center py-2 font-bold text-zRed-900 w-full bg-zRed-500 border-2 border-zRed-900 hover:border-zRed-500 hover:text-zRed-500 hover:bg-zRed-900 font-opensans transition-all duration-300 ${loggedIn?'block':'hidden'}`} onClick={doCancel}>Manage Subscription</div>
         <div className={`absolute bottom-20 text-center py-2 font-bold text-zGreen-900 w-full bg-zGreen-500 border-2 border-zGreen-900 hover:border-zGreen-500 hover:text-zGreen-500 hover:bg-zGreen-900 font-opensans transition-all duration-300 ${loggedIn?'block':'hidden'}`} onClick={doLogOut}>Log Out</div>
         <div className='absolute bottom-0 text-center py-2 font-bold text-zGreen-900 w-full bg-zGreen-500 border-2 border-zGreen-900 hover:border-zGreen-500 hover:text-zGreen-500 hover:bg-zGreen-900 font-opensans transition-all duration-300' onClick={doLogin}>{loginButton}</div>
