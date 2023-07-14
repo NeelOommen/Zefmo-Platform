@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'oldmacbookfix': {'raw': '(min-height: 700px)'}
+      },
       animation: {
         bgAnim: 'bgKeyFrames 8s infinite',
       },
