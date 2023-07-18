@@ -1,17 +1,23 @@
 import Image from "next/image"
 import logo from 'public/decologo.png'
 import { auth } from '@/firebase/firebaseClient'
-import { createCheckoutSession } from "@/stripe/createCheckoutSession"
+import { createMonthlyCheckoutSession, createYearlyCheckoutSession } from "@/stripe/createCheckoutSession"
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useState } from "react"
 
 export default function SubscriptionPage(){
     const [user, userLoading] = useAuthState(auth)
-    const [buttonText, setButtonText] = useState('Go Premium!')
+    const [monthlyButtonText, setMonthlyButtonText] = useState('Go Premium for ₹9,999/month')
+    const [yearlyButtonText, setYearlyButtonText] = useState('Go Premium for ₹99,999/year (Save over 15%!)')
 
-    function buttonHandler(){
-        setButtonText('Please wait while we redirect you...')
-        createCheckoutSession(user.uid)
+    function monthlyButtonHandler(){
+        setMonthlyButtonText('Please wait while we redirect you...')
+        createMonthlyCheckoutSession(user.uid)
+    }
+
+    function yearlyButtonHandler(){
+        setYearlyButtonText('Please wait while we redirect you...')
+        createYearlyCheckoutSession(user.uid)
     }
 
     function logoutHandler(){
@@ -40,7 +46,8 @@ export default function SubscriptionPage(){
                     <div className="absolute w-56 md:w-64 h-56 md:h-64 bg-zPink-500 rounded-full   z-10 mix-blend-hard-light animate-bgAnim animation-delay-2000"></div>
                     <div className="absolute w-56 md:w-64 h-56 md:h-64 bg-zPurple-500 rounded-full z-10 mix-blend-hard-light animate-bgAnim animation-delay-4000"></div>
                     <div className="absolute w-56 md:w-64 h-56 md:h-64 bg-zRed-500 rounded-full    z-10 mix-blend-hard-light animate-bgAnim animation-delay-6000"></div>
-                    <div className={`w-4/5 mx-4 p-4 ${!userLoading?'bg-zYellow-500 hover:bg-zYellow-100 hover:text-zYellow-900':'bg-gray-400 text-gray-800'} border-2 z-50 border-black shadow-harsh5px hover:shadow-harsh10px hover:rounded-2xl font-poppins font-bold text-white text-center m-4 mb-2 absolute bottom-28 md:bottom-36 transition-all duration-300`} onClick={buttonHandler}>{buttonText}</div>
+                    <div className={`w-4/5 mx-4 p-4 ${!userLoading?'bg-zYellow-500 hover:bg-zYellow-100 hover:text-zYellow-900':'bg-gray-400 text-gray-800'} border-2 z-50 border-black shadow-harsh5px hover:shadow-harsh10px hover:rounded-2xl font-poppins font-bold text-white text-center m-4 mb-2 absolute bottom-48 md:bottom-56 transition-all duration-300`} onClick={yearlyButtonHandler}>{yearlyButtonText}</div>
+                    <div className={`w-4/5 mx-4 p-4 ${!userLoading?'bg-zYellow-500 hover:bg-zYellow-100 hover:text-zYellow-900':'bg-gray-400 text-gray-800'} border-2 z-50 border-black shadow-harsh5px hover:shadow-harsh10px hover:rounded-2xl font-poppins font-bold text-white text-center m-4 mb-2 absolute bottom-28 md:bottom-36 transition-all duration-300`} onClick={monthlyButtonHandler}>{monthlyButtonText}</div>
                     <div className='w-4/5 mx-4 p-4 bg-zRed-500 hover:bg-zRed-100 hover:text-zRed-900 border-2 z-50 border-black shadow-harsh5px hover:shadow-harsh10px hover:rounded-2xl font-poppins font-bold text-white text-center absolute mt-auto bottom-8 md:bottom-16 mb-4 transition-all duration-300' onClick={logoutHandler}>Logout</div>
                 </div>
             </div>
