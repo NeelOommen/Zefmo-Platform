@@ -27,9 +27,9 @@ export default function ResultSummary({ offset, setOffset, setList, influencerLi
                 </div>
                 <div className='flex flex-col items-center justify-center w-full'>
                     <div className={`flex flex-row items-center justify-center min-w-full`}>
-                        <div className={`${offset===0?'text-gray-400':'text-black hover:text-zPink-500'} transition-all duration-300`} onClick={decreaseOffset}>{'<'}Previous &nbsp;</div>
-                        <div>{offset+1} to {offset+25}</div>
-                        <div className={`text-black hover:text-zPink-500 transition-all duration-300`} onClick={increaseOffset}>&nbsp; Next{'>'}</div>
+                        <div className={`${offset===0?'text-gray-400':'text-black hover:text-zPink-500'} transition-all duration-300 ${data.length==25?'block':'hidden'}`} onClick={decreaseOffset}>{'<'}Previous &nbsp;</div>
+                        <div>Results: {offset+1} to {offset+data.length}</div>
+                        <div className={`text-black hover:text-zPink-500 transition-all duration-300 ${data.length==25?'block':'hidden'}`} onClick={increaseOffset}>&nbsp; Next{'>'}</div>
                     </div>
                 </div>
             </div>
